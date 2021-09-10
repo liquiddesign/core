@@ -1,0 +1,39 @@
+{
+	"name": "liquiddesign/base",
+	"description": "Hlavní třídy a služby pro Nette",
+	"license": "MIT",
+	"autoload": {
+		"psr-4": {"Base\\": "src/"}
+	},
+	"autoload-dev": {
+		"psr-4": { "Base\\Tests\\": "tests/" }
+	},
+	"require":
+	{
+		"php":">=7.4",
+		"nette/application":"^3.0",
+		"nette/routing":"^3.0",
+		"nette/di":"^3.0",
+		"nette/bootstrap":"^3.0",
+		"nette/caching":"^3.0",
+		"nette/security":"^3.0",
+		"liquiddesign/storm":"@dev",
+		"liquiddesign/pages":"@dev",
+		"liquiddesign/migrator":"@dev",
+		"ext-pdo": "*"
+	},
+	"require-dev":
+	{
+		"nette/tester":"*",
+		"tracy/tracy":"*",
+		"composer/composer": "*",
+		"liquiddesign/codestyle": "@dev",
+		"phpstan/phpstan": "*"
+	},
+	"scripts": {
+		"phpstan": "phpstan analyse --memory-limit 1G -c phpstan.neon",
+		"phpcs": "phpcs --standard=ruleset.xml --ignore=assets src",
+		"phpcsfix": "phpcbf --standard=ruleset.xml --ignore=assets src",
+		"tester": "tester tests/Cases/*.phpt  -c tests/php.ini --setup tests/setup.php"
+	}
+}
