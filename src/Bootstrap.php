@@ -10,7 +10,9 @@ class Bootstrap
 {
 	public static function boot(): Configurator
 	{
-		$environment = (new \Nette\DI\Config\Loader)->load(__DIR__ . '/../config/environments.neon');
+		$dir = \dirname((new \ReflectionClass(static::class))->getFileName());
+		
+		$environment = (new \Nette\DI\Config\Loader)->load($dir . '/../config/environments.neon');
 		
 		$configurator = new \Nette\Bootstrap\Configurator();
 		$configurator->setDebugMode($environment['parameters']['access']['debug'] ?? []);
@@ -18,16 +20,17 @@ class Bootstrap
 		$configurator->setTimeZone('Europe/Prague');
 		$configurator->addStaticParameters([
 			'trustedMode' => $configurator->isDebugMode() || Configurator::detectDebugMode($environment['parameters']['access']['trusted']),
+			'appDir' => $dir,
 		]);
 		
-		$configurator->enableTracy(__DIR__ . '/../temp/log');
-		$configurator->setTempDirectory(__DIR__ . '/../temp');
-		$configurator->addConfig(__DIR__ . '/../config/general.neon');
+		$configurator->enableTracy($dir . '/../temp/log');
+		$configurator->setTempDirectory($dir . '/../temp');
+		$configurator->addConfig($dir . '/../config/general.neon');
 		
-		if (\is_file(__DIR__ . '/../config/general.production.neon')) {
-			$configurator->addConfig(__DIR__ . '/../config/general.production.neon');
-		} elseif (\is_file(__DIR__ . '/../config/general.local.neon')) {
-			$configurator->addConfig(__DIR__ . '/../config/general.local.neon');
+		if (\is_file($dir . '/../config/general.production.neon')) {
+			$configurator->addConfig($dir . '/../config/general.production.neon');
+		} elseif (\is_file($dir . '/../config/general.local.neon')) {
+			$configurator->addConfig($dir . '/../config/general.local.neon');
 		} else {
 			\trigger_error('Please run "composer init-devel or init-production"', \E_USER_ERROR );
 		}

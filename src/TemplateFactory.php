@@ -12,7 +12,7 @@ use Nette\Localization\Translator;
 use Pages\DB\Page;
 use Pages\Pages;
 
-class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
+abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
 {
 	/** @inject */
 	public Pages $pages;
@@ -30,7 +30,7 @@ class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
 	
 	public array $mutations;
 	
-	public string $baseTitle;
+	abstract public function getBaseTitle(): string;
 	
 	public function setTemplateParameters(Template $template): void
 	{
@@ -76,7 +76,7 @@ class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
 		$template->ts = $this->application->getEnvironment() !== 'production' ? (new Cache($this->storage))->call('time') : \time();
 		
 		if ($page === null || $page instanceof Page) {
-			$template->headTitle = $page ? ($page->getType() === 'index' ? $page->title : $page->title . ' | ' . $this->baseTitle) : $this->baseTitle;
+			$template->headTitle = $page ? ($page->getType() === 'index' ? $page->title : $page->title . ' | ' . $this->getBaseTitle()) : $this->getBaseTitle();
 			$template->headDescription = $page ? $page->description : null;
 			$template->headCanonical = $page ? $page->canonicalUrl : null;
 			$template->headRobots = $this->application->getEnvironment() !== 'test' ? ($page ? $page->robots : 'index, follow') : 'noindex, nofollow';
