@@ -11,19 +11,23 @@ use StORM\DIConnection;
 
 class Application extends \Nette\Application\Application
 {
+	/**
+	 * @var callable[] Occurs when entity in repository is updated
+	 */
+	public array $onMutationChange = [];
+	
+	public string $mutationRequestParameter = 'lang';
+	
 	private string $mutation;
 	
 	private array $locales;
 	
 	private string $environment = 'production';
 	
-	private DIConnection $connection;
-	
-	public function __construct(array $mutations, array $locales, array $environments, IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse, DIConnection $connection)
+	public function __construct(array $mutations, array $locales, array $environments, IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
 		parent::__construct($presenterFactory, $router, $httpRequest, $httpResponse);
 		
-		$this->connection = $connection;
 		$this->locales = $locales;
 		
 		if (!isset($mutations[0])) {
@@ -33,9 +37,8 @@ class Application extends \Nette\Application\Application
 		$this->setMutation($mutations[0]);
 		
 		$this->onRequest[] = function (Application $app, Nette\Application\Request $request) use ($environments, $httpRequest): void {
-			if ($lang = $request->getParameter('lang')) {
+			if ($lang = $request->getParameter($app->mutationRequestParameter)) {
 				$app->setMutation($lang);
-				$app->setLocale($lang);
 				
 				foreach ($environments ?? [] as $environment => $patterns) {
 					foreach ($patterns ?? [] as $pattern) {
@@ -49,10 +52,10 @@ class Application extends \Nette\Application\Application
 		};
 	}
 	
-	public function setLocale(string $lang): void
+	public function setLocale(string $mutation): void
 	{
-		if (isset($this->locales[$lang])) {
-			\setlocale(\LC_ALL, ...$this->locales[$lang]);
+		if (isset($this->locales[$mutation])) {
+			\setlocale(\LC_ALL, ...$this->locales[$mutation]);
 		}
 	}
 	
@@ -68,7 +71,9 @@ class Application extends \Nette\Application\Application
 	
 	public function setMutation(string $mutation): void
 	{
-		$this->connection->setMutation($mutation);
 		$this->mutation = $mutation;
+		$this->setLocale($mutation);
+		
+		Nette\Utils\Arrays::invoke($this->onMutationChange, $mutation);
 	}
 }

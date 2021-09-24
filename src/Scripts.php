@@ -172,7 +172,7 @@ abstract class Scripts
 			}
 		}
 		
-		$event->getIO()->write('Hotovo.');
+		$event->getIO()->write('Done.');
 	}
 	
 	protected static function getRootDirectory(): string
