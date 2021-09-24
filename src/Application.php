@@ -23,6 +23,8 @@ class Application extends \Nette\Application\Application
 	private array $locales;
 	
 	private string $environment = 'production';
+
+	private ?string $locale = null;
 	
 	public function __construct(array $mutations, array $locales, array $environments, IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
@@ -56,7 +58,13 @@ class Application extends \Nette\Application\Application
 	{
 		if (isset($this->locales[$mutation])) {
 			\setlocale(\LC_ALL, ...$this->locales[$mutation]);
+			$this->locale = $this->locales[$mutation][0] ?? null;
 		}
+	}
+	
+	public function getLocale(): ?string
+	{
+		return $this->locale;
 	}
 	
 	public function getEnvironment(): string
