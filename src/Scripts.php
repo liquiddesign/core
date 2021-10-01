@@ -175,7 +175,7 @@ abstract class Scripts
 		$event->getIO()->write('Done.');
 	}
 	
-	abstract protected static function getRootDirectory(): string
+	abstract protected static function getRootDirectory(): string;
 	
 	abstract protected static function createConfigurator(): Configurator;
 	
