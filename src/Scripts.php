@@ -29,11 +29,11 @@ abstract class Scripts
 		
 		$path = static::getRootDirectory();
 		
-		if ($arguments[0] === 'on' && !\is_file($path . 'maintenance.php')) {
+		if ($arguments[0] === 'on' && !\is_file($path . '/maintenance.php')) {
 			FileSystem::rename($path . '/.maintenance.php', $path . '/maintenance.php');
 		}
 		
-		if ($arguments[0] === 'off' && !\is_file($path . '.maintenance.php')) {
+		if ($arguments[0] === 'off' && !\is_file($path . '/.maintenance.php')) {
 			FileSystem::rename($path . '/maintenance.php', $path . '/.maintenance.php');
 		}
 	}
