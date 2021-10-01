@@ -166,7 +166,7 @@ abstract class Scripts
 					return;
 				}
 				
-				foreach (Neon::decode(\str_replace(array_keys($parameters), array_values($parameters), \file_get_contents("$dataDir/$dataFile.neon"))) ?? [] as $values) {
+				foreach (Neon::decode(\str_replace(\array_keys($parameters), \array_values($parameters), \file_get_contents("$dataDir/$dataFile.neon"))) ?? [] as $values) {
 					$stm->findRepository($values->value)->syncOne($values->attributes);
 				}
 			}
