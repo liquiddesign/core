@@ -175,10 +175,7 @@ abstract class Scripts
 		$event->getIO()->write('Done.');
 	}
 	
-	protected static function getRootDirectory(): string
-	{
-		return __DIR__ . '/..';
-	}
+	abstract protected static function getRootDirectory(): string
 	
 	abstract protected static function createConfigurator(): Configurator;
 	
