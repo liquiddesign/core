@@ -1,6 +1,6 @@
 {
 	"name": "liquiddesign/base",
-	"description": "Hlavní třídy a služby pro Nette",
+	"description": "⌬ Hlavní třídy a služby pro Nette",
 	"license": "MIT",
 	"autoload": {
 		"psr-4": {"Base\\": "src/"}
