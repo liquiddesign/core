@@ -1,4 +1,4 @@
-# Base
+# ⌬ Base
 Hlavní třídy a služby pro Nette
 
 ![Travis](https://travis-ci.org/liquiddesign/base.svg?branch=master)

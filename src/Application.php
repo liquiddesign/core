@@ -38,7 +38,8 @@ class Application extends \Nette\Application\Application
 		
 		$this->setMutation($mutations[0]);
 		
-		$this->onRequest[] = function (Application $app, Nette\Application\Request $request) use ($environments, $httpRequest): void {
+		$this->onRequest[] = function (Nette\Application\Application $app, Nette\Application\Request $request) use ($environments, $httpRequest): void {
+			/** @var \Base\Application $app */
 			if ($lang = $request->getParameter($app->mutationRequestParameter)) {
 				$app->setMutation($lang);
 				
