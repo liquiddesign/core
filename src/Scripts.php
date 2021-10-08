@@ -12,9 +12,16 @@ use StORM\DIConnection;
 
 abstract class Scripts
 {
+	abstract protected static function getRootDirectory(): string;
+	
+	abstract protected static function createConfigurator(): Configurator;
+	
+	abstract protected static function getAccountEntityClass(): string;
+
 	public static function clearNetteCache(Event $event): void
 	{
-		static::clearCache();;
+		static::clearCache();
+
 		$event->getIO()->write('Nette cache was cleaned.');
 	}
 	
@@ -24,6 +31,7 @@ abstract class Scripts
 		
 		if (!isset($arguments[0]) || !\in_array($arguments[0], ['on', 'off'])) {
 			$event->getIO()->writeError('ERROR: Missing argument on|off!');
+
 			return;
 		}
 		
@@ -33,9 +41,11 @@ abstract class Scripts
 			FileSystem::rename($path . '/.maintenance.php', $path . '/maintenance.php');
 		}
 		
-		if ($arguments[0] === 'off' && !\is_file($path . '/.maintenance.php')) {
-			FileSystem::rename($path . '/maintenance.php', $path . '/.maintenance.php');
+		if ($arguments[0] !== 'off' || \is_file($path . '/.maintenance.php')) {
+			return;
 		}
+
+		FileSystem::rename($path . '/maintenance.php', $path . '/.maintenance.php');
 	}
 	
 	public static function initProduction(Event $event): void
@@ -59,7 +69,7 @@ abstract class Scripts
 						'user' => (string) $event->getIO()->ask('User:'),
 						'password' => (string) $event->getIO()->ask('Password:'),
 					],
-				]
+				],
 			],
 		];
 		
@@ -72,11 +82,12 @@ abstract class Scripts
 	{
 		$generalConfig = static::getRootDirectory() . '/config/general.neon';
 		$localConfig = static::getRootDirectory() . '/config/general.local.neon';
-		$dataDir = static::getRootDirectory() .  '/config/data';
+		$dataDir = static::getRootDirectory() . '/config/data';
 		$projectName = Neon::decode(\file_get_contents($generalConfig))['parameters']['projectName'] ?? null;
 		
 		if (!$projectName) {
 			$event->getIO()->writeError('ERROR: "projectName" parameter not found in general config!');
+
 			return;
 		}
 		
@@ -96,7 +107,7 @@ abstract class Scripts
 							'user' => $dbUser,
 							'password' => $dbPassword,
 						],
-					]
+					],
 				],
 			];
 			
@@ -119,9 +130,11 @@ abstract class Scripts
 			$connection = new Connection('default', "mysql:;host=$server", $dbUser, $dbPassword, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
 		} catch (\PDOException $x) {
 			$event->getIO()->writeError("ERROR: unable to join to SQL server: '$server'.");
+
 			if (!$event->getIO()->askConfirmation('Try again? (y)')) {
-				die();
+				die;
 			}
+
 			goto createDatabase;
 		}
 		
@@ -130,7 +143,7 @@ abstract class Scripts
 		}
 		
 		$connection->query("CREATE DATABASE IF NOT EXISTS $projectName;");
-		$connection = null;
+		unset($connection);
 		
 		$container = static::createConfigurator()->createContainer();
 		
@@ -161,8 +174,9 @@ abstract class Scripts
 			];
 			
 			foreach ($event->getArguments() as $dataFile) {
-				if (!is_file("$dataDir/$dataFile.neon")) {
+				if (!\is_file("$dataDir/$dataFile.neon")) {
 					$event->getIO()->writeError("ERROR: '$dataFile'.neon data file not found!");
+
 					return;
 				}
 				
@@ -174,12 +188,6 @@ abstract class Scripts
 		
 		$event->getIO()->write('Done.');
 	}
-	
-	abstract protected static function getRootDirectory(): string;
-	
-	abstract protected static function createConfigurator(): Configurator;
-	
-	abstract protected static function getAccountEntityClass(): string;
 	
 	protected static function clearCache(): void
 	{

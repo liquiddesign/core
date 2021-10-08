@@ -1,4 +1,6 @@
 parameters:
+	universalObjectCratesClasses:
+		- Nette\Application\UI\Template
 	level: 5
 	paths:
 		- src

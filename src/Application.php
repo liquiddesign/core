@@ -7,7 +7,6 @@ namespace Base;
 use Nette;
 use Nette\Application\IPresenterFactory;
 use Nette\Routing\Router;
-use StORM\DIConnection;
 
 class Application extends \Nette\Application\Application
 {
@@ -20,14 +19,24 @@ class Application extends \Nette\Application\Application
 	
 	private string $mutation;
 	
+	/**
+	 * @var string[][]
+	 */
 	private array $locales;
 	
 	private string $environment = 'production';
 
 	private ?string $locale = null;
 	
-	public function __construct(array $mutations, array $locales, array $environments, IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
-	{
+	public function __construct(
+		array $mutations,
+		array $locales,
+		array $environments,
+		IPresenterFactory $presenterFactory,
+		Router $router,
+		Nette\Http\IRequest $httpRequest,
+		Nette\Http\IResponse $httpResponse
+	) {
 		parent::__construct($presenterFactory, $router, $httpRequest, $httpResponse);
 		
 		$this->locales = $locales;
@@ -47,6 +56,7 @@ class Application extends \Nette\Application\Application
 					foreach ($patterns ?? [] as $pattern) {
 						if (\strpos($httpRequest->getUrl()->getBaseUrl(), $pattern) !== false) {
 							$this->environment = $environment;
+
 							break;
 						}
 					}

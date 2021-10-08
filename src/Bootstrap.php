@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Base;
 
-use \Nette\Bootstrap\Configurator;
+use Nette\Bootstrap\Configurator;
 
 class Bootstrap
 {
@@ -12,7 +12,7 @@ class Bootstrap
 	{
 		$dir = \dirname((new \ReflectionClass(static::class))->getFileName());
 		
-		$environment = (new \Nette\DI\Config\Loader)->load($dir . '/../config/environments.neon');
+		$environment = (new \Nette\DI\Config\Loader())->load($dir . '/../config/environments.neon');
 		
 		$configurator = new \Nette\Bootstrap\Configurator();
 		$configurator->setDebugMode($environment['parameters']['access']['debug'] ?? []);
@@ -35,7 +35,7 @@ class Bootstrap
 		} elseif (\is_file($dir . '/../config/general.local.neon')) {
 			$configurator->addConfig($dir . '/../config/general.local.neon');
 		} else {
-			\trigger_error('Please run "composer init-devel or init-production"', \E_USER_ERROR );
+			\trigger_error('Please run "composer init-devel or init-production"', \E_USER_ERROR);
 		}
 		
 		return $configurator;
@@ -43,6 +43,7 @@ class Bootstrap
 	
 	public static function getDebugModeByCookie(bool $default): bool
 	{
+		// @codingStandardsIgnoreLine
 		return (bool) ($_COOKIE['debug'] ?? $default);
 	}
 }
