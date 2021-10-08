@@ -16,11 +16,14 @@ class Bootstrap
 		
 		$configurator = new \Nette\Bootstrap\Configurator();
 		$configurator->setDebugMode($environment['parameters']['access']['debug'] ?? []);
-		
 		$configurator->setTimeZone('Europe/Prague');
+		
+		$trustedMode = $configurator->isDebugMode() || Configurator::detectDebugMode($environment['parameters']['access']['trusted']);
+		
 		$configurator->addStaticParameters([
-			'trustedMode' => $configurator->isDebugMode() || Configurator::detectDebugMode($environment['parameters']['access']['trusted']),
+			'trustedMode' => $trustedMode,
 			'appDir' => $dir,
+			'debugMode' => $trustedMode ? static::getDebugModeByCookie($configurator->isDebugMode()) : $configurator->isDebugMode(),
 		]);
 		
 		$configurator->enableTracy($dir . '/../temp/log');
@@ -36,5 +39,10 @@ class Bootstrap
 		}
 		
 		return $configurator;
+	}
+	
+	public static function getDebugModeByCookie(bool $default): bool
+	{
+		return (bool) ($_COOKIE['debug'] ?? $default);
 	}
 }
