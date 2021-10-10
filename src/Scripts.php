@@ -3,7 +3,7 @@
 namespace Base;
 
 use Composer\Script\Event;
-use Nette\Configurator;
+use Nette\Bootstrap\Configurator;
 use Nette\Neon\Neon;
 use Nette\Security\Passwords;
 use Nette\Utils\FileSystem;
