@@ -19,11 +19,13 @@ class Bootstrap
 		$configurator->setTimeZone('Europe/Prague');
 		
 		$trustedMode = $configurator->isDebugMode() || Configurator::detectDebugMode($environment['parameters']['access']['trusted']);
+		$debugMode = $trustedMode ? static::getDebugModeByCookie($configurator->isDebugMode()) : $configurator->isDebugMode();
 		
 		$configurator->addStaticParameters([
 			'trustedMode' => $trustedMode,
 			'appDir' => $dir,
-			'debugMode' => $trustedMode ? static::getDebugModeByCookie($configurator->isDebugMode()) : $configurator->isDebugMode(),
+			'debugMode' => $debugMode,
+			'productionMode' => !$debugMode,
 		]);
 		
 		$configurator->enableTracy($dir . '/../temp/log');
