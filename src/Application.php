@@ -52,7 +52,7 @@ class Application extends \Nette\Application\Application
 			if ($lang = $request->getParameter($app->mutationRequestParameter)) {
 				$app->setMutation($lang);
 				
-				foreach ($environments ?? [] as $environment => $patterns) {
+				foreach ($environments as $environment => $patterns) {
 					foreach ($patterns ?? [] as $pattern) {
 						if (\strpos($httpRequest->getUrl()->getBaseUrl(), $pattern) !== false) {
 							$this->environment = $environment;
