@@ -142,7 +142,7 @@ abstract class Scripts
 			return;
 		}
 		
-		$connection->query("CREATE DATABASE IF NOT EXISTS $projectName;");
+		$connection->query("CREATE DATABASE IF NOT EXISTS %s;", [], [$projectName]);
 		unset($connection);
 		
 		$container = static::createConfigurator()->createContainer();
