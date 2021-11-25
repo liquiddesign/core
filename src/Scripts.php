@@ -73,7 +73,7 @@ abstract class Scripts
 			],
 		];
 		
-		\file_put_contents($productionConfig, Neon::encode($config, Neon::BLOCK), Neon::BLOCK);
+		\file_put_contents($productionConfig, Neon::encode($config, Neon::BLOCK));
 		
 		$event->getIO()->write('Done.');
 	}
@@ -111,7 +111,7 @@ abstract class Scripts
 				],
 			];
 			
-			\file_put_contents($localConfig, Neon::encode($config, Neon::BLOCK), Neon::BLOCK);
+			\file_put_contents($localConfig, Neon::encode($config, Neon::BLOCK));
 		} else {
 			$settings = Neon::decode(\file_get_contents($localConfig))['storm']['connections']['default'];
 			$dbUser = $settings['user'] ?? 'root';
