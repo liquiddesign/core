@@ -142,7 +142,7 @@ abstract class Scripts
 			return;
 		}
 		
-		$connection->query("CREATE DATABASE IF NOT EXISTS %s;", [], [$projectName]);
+		$connection->query("CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;", [], [$projectName]);
 		unset($connection);
 		
 		$container = static::createConfigurator()->createContainer();
