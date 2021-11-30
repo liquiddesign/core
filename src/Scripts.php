@@ -4,6 +4,8 @@ namespace Base;
 
 use Composer\Script\Event;
 use Nette\Bootstrap\Configurator;
+use Nette\Caching\Cache;
+use Nette\Caching\Storage;
 use Nette\Neon\Neon;
 use Nette\Security\Passwords;
 use Nette\Utils\FileSystem;
@@ -17,6 +19,19 @@ abstract class Scripts
 	abstract protected static function createConfigurator(): Configurator;
 	
 	abstract protected static function getAccountEntityClass(): string;
+
+	public static function clearEshopCategoriesProductCache(Event $event): void
+	{
+		$container = static::createConfigurator()->createContainer();
+
+		$cache = new Cache($container->getByType(Storage::class));
+
+		$cache->clean([
+			Cache::TAGS => ['categories', 'pricelists', 'products'],
+		]);
+
+		$event->getIO()->write('Eshop categories and products cache was cleaned.');
+	}
 
 	public static function clearNetteCache(Event $event): void
 	{
