@@ -210,12 +210,12 @@ abstract class Scripts
 	
 	public static function importProductionDatabaseToDevelop(Event $event): void
 	{
-		Debugger::enable(Debugger::DETECT, __DIR__ . '/../temp/log');
+		Debugger::enable(Debugger::DETECT, static::getRootDirectory() . '/temp/log');
 		Debugger::log('importProductionDatabaseToDevelop - START');
 		$event->getIO()->write('--- START ---');
 		
-		$localConfig = __DIR__ . '/../config/general.local.neon';
-		$productionConfig = __DIR__ . '/../config/general.production.neon';
+		$localConfig = static::getRootDirectory() . '/config/general.local.neon';
+		$productionConfig = static::getRootDirectory() . '/config/general.production.neon';
 		
 		$dbConfig = null;
 		
