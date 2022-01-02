@@ -332,12 +332,16 @@ abstract class Scripts
 			$event->getIO()->writeError("!! WARNING: Script is available only on develop or staging environment !!");
 		}
 		
+		$event->getIO()->write('--- START ---');
+		
 		$productionUserfilesDir = static::getRootDirectory() . "/../$productionDir/userfiles";
 		$developUserfilesDir = static::getRootDirectory() . '/userfiles';
 		
 		FileSystem::delete($developUserfilesDir);
 		
 		FileSystem::copy($productionUserfilesDir, $developUserfilesDir);
+		
+		$event->getIO()->write('--- FINISH -- ');
 	}
 	
 	protected static function clearCache(): void
