@@ -318,6 +318,18 @@ abstract class Scripts
 		$event->getIO()->write('--- FINISH -- ');
 	}
 	
+	public static function importProductionUserfilesToDevelop(Event $event): void
+	{
+		$event->getIO()->write(static::getRootDirectory());
+		
+		$productionDir = static::getRootDirectory() . '/../www/userfiles';
+		$developDir = static::getRootDirectory() . '/userfiles';
+		
+		FileSystem::delete($developDir);
+		
+		FileSystem::copy($productionDir, $developDir);
+	}
+	
 	protected static function clearCache(): void
 	{
 		FileSystem::delete(static::getRootDirectory() . '/temp/cache');
