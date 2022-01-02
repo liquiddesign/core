@@ -239,7 +239,7 @@ abstract class Scripts
 			return;
 		}
 		
-		$filename = __DIR__ . '/../temp/mysql_dump.sql';
+		$filename = static::getRootDirectory() . '/temp/mysql_dump.sql';
 		
 		/* Dump from production DB */
 		try {
