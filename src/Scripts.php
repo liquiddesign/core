@@ -208,11 +208,6 @@ abstract class Scripts
 		$event->getIO()->write('Done.');
 	}
 	
-	protected static function clearCache(): void
-	{
-		FileSystem::delete(static::getRootDirectory() . '/temp/cache');
-	}
-	
 	public static function importProductionDatabaseToDevelop(Event $event): void
 	{
 		Debugger::enable(Debugger::DETECT, __DIR__ . '/../temp/log');
@@ -321,5 +316,10 @@ abstract class Scripts
 		FileSystem::delete($filename);
 		
 		$event->getIO()->write('--- FINISH -- ');
+	}
+	
+	protected static function clearCache(): void
+	{
+		FileSystem::delete(static::getRootDirectory() . '/temp/cache');
 	}
 }
