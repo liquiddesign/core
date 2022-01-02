@@ -275,10 +275,10 @@ abstract class Scripts
 			
 			$templine = '';
 			
-			$container = \App\Bootstrap::boot()->createContainer();
+			$container = static::createConfigurator()->createContainer();
 			
 			/** @var \StORM\DIConnection $stm */
-			$stm = $container->getByName('storm.default');
+			$stm = $container->getByType(DIConnection::class);
 			$stm->exec("SET foreign_key_checks = 0;");
 			$dbName = $stm->getDatabaseName();
 			$dropTableList = $stm->query("SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;') FROM information_schema.tables WHERE table_schema = '$dbName';")->fetchAll(\PDO::FETCH_COLUMN);
