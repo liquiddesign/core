@@ -20,6 +20,7 @@
 		"liquiddesign/storm":"~1.0",
 		"liquiddesign/pages":"@dev",
 		"liquiddesign/migrator":"@dev",
+		"ifsnop/mysqldump-php": "^2.9",
 		"ext-pdo": "*"
 	},
 	"require-dev":

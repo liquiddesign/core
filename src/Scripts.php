@@ -3,14 +3,18 @@
 namespace Base;
 
 use Composer\Script\Event;
+use Ifsnop\Mysqldump\Mysqldump;
 use Nette\Bootstrap\Configurator;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
+use Nette\FileNotFoundException;
 use Nette\Neon\Neon;
 use Nette\Security\Passwords;
 use Nette\Utils\FileSystem;
 use StORM\Connection;
 use StORM\DIConnection;
+use Tracy\Debugger;
+use Tracy\ILogger;
 
 abstract class Scripts
 {
@@ -207,5 +211,115 @@ abstract class Scripts
 	protected static function clearCache(): void
 	{
 		FileSystem::delete(static::getRootDirectory() . '/temp/cache');
+	}
+	
+	public static function importProductionDatabaseToDevelop(Event $event): void
+	{
+		Debugger::enable(Debugger::DETECT, __DIR__ . '/../temp/log');
+		Debugger::log('importProductionDatabaseToDevelop - START');
+		$event->getIO()->write('--- START ---');
+		
+		$localConfig = __DIR__ . '/../config/general.local.neon';
+		$productionConfig = __DIR__ . '/../config/general.production.neon';
+		
+		$dbConfig = null;
+		
+		if (\is_file($localConfig)) {
+			$dbConfig = Neon::decode(\file_get_contents($localConfig));
+		}
+		
+		if (\is_file($productionConfig)) {
+			$dbConfig = Neon::decode(\file_get_contents($productionConfig));
+		}
+		
+		if (!$dbConfig) {
+			Debugger::log('Error: No configuration file found!', ILogger::ERROR);
+			
+			return;
+		}
+		
+		if (!isset($dbConfig['storm']['connections']['production'])) {
+			$event->getIO()->writeError('!! error: Production DB is not defined in configuration file');
+			
+			return;
+		}
+		
+		$filename = __DIR__ . '/../temp/mysql_dump.sql';
+		
+		/* Dump from production DB */
+		try {
+			$dump = new Mysqldump(
+				"mysql:host=" . $dbConfig['storm']['connections']['production']['host'] . ";dbname=" . $dbConfig['storm']['connections']['production']['dbname'],
+				$dbConfig['storm']['connections']['production']['user'],
+				$dbConfig['storm']['connections']['production']['password'],
+				[],
+				[\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION],
+			);
+			
+			$dump->start($filename);
+			
+			$event->getIO()->write('- production DB dumped');
+			Debugger::log('-- production DB dumped');
+		} catch (\Exception $e) {
+			$event->getIO()->writeError('!! error: ' . $e->getMessage());
+			Debugger::log('error: ' . $e->getMessage(), ILogger::ERROR);
+		}
+		
+		/* Import to develop DB */
+		try {
+			if (!\file_exists($filename)) {
+				throw new FileNotFoundException("Error: File not found.\n");
+			}
+			
+			$fp = \fopen($filename, 'r');
+			
+			$templine = '';
+			
+			$container = \App\Bootstrap::boot()->createContainer();
+			
+			/** @var \StORM\DIConnection $stm */
+			$stm = $container->getByName('storm.default');
+			$stm->exec("SET foreign_key_checks = 0;");
+			$dbName = $stm->getDatabaseName();
+			$dropTableList = $stm->query("SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;') FROM information_schema.tables WHERE table_schema = '$dbName';")->fetchAll(\PDO::FETCH_COLUMN);
+			
+			foreach ($dropTableList as $dropTable) {
+				$stm->exec($dropTable);
+			}
+			
+			$stm->exec("SET foreign_key_checks = 1;");
+			
+			$event->getIO()->write('- develop DB tables dropped');
+			
+			while (($line = \fgets($fp)) !== false) {
+				// Skip it if it's a comment
+				if (\substr($line, 0, 2) === '--' || $line === '') {
+					continue;
+				}
+				
+				$templine .= $line;
+				
+				// If it has a semicolon at the end, it's the end of the query
+				if (\substr(\trim($line), -1, 1) !== ';') {
+					continue;
+				}
+				
+				$stm->query($templine);
+				
+				$templine = '';
+			}
+			
+			//close the file
+			\fclose($fp);
+			
+			$event->getIO()->write('- production DB imported to develop');
+		} catch (\Throwable $e) {
+			$event->getIO()->writeError("!! Error importing: " . $e->getMessage());
+			Debugger::log("Error importing: " . $e->getMessage(), ILogger::ERROR);
+		}
+		
+		FileSystem::delete($filename);
+		
+		$event->getIO()->write('--- FINISH -- ');
 	}
 }
