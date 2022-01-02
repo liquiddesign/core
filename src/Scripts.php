@@ -210,6 +210,12 @@ abstract class Scripts
 	
 	public static function importProductionDatabaseToDevelop(Event $event): void
 	{
+		$productionDir = 'www';
+		
+		if (\basename(\dirname(static::getRootDirectory(), 2)) === $productionDir) {
+			$event->getIO()->writeError("!! WARNING: Script is available only on develop or staging environment !!");
+		}
+		
 		Debugger::enable(Debugger::DETECT, static::getRootDirectory() . '/temp/log');
 		Debugger::log('importProductionDatabaseToDevelop - START');
 		$event->getIO()->write('--- START ---');
@@ -320,14 +326,18 @@ abstract class Scripts
 	
 	public static function importProductionUserfilesToDevelop(Event $event): void
 	{
-		$event->getIO()->write(static::getRootDirectory());
+		$productionDir = 'www';
 		
-		$productionDir = static::getRootDirectory() . '/../www/userfiles';
-		$developDir = static::getRootDirectory() . '/userfiles';
+		if (\basename(\dirname(static::getRootDirectory(), 2)) === $productionDir) {
+			$event->getIO()->writeError("!! WARNING: Script is available only on develop or staging environment !!");
+		}
 		
-		FileSystem::delete($developDir);
+		$productionUserfilesDir = static::getRootDirectory() . "/../$productionDir/userfiles";
+		$developUserfilesDir = static::getRootDirectory() . '/userfiles';
 		
-		FileSystem::copy($productionDir, $developDir);
+		FileSystem::delete($developUserfilesDir);
+		
+		FileSystem::copy($productionUserfilesDir, $developUserfilesDir);
 	}
 	
 	protected static function clearCache(): void
