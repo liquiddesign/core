@@ -79,7 +79,7 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 		$template->page = $this->pages->getPage();
 		$template->lang = $template->control->lang ?? null;
 		$template->langs = $this->mutations;
-		$template->ts = $this->application->getEnvironment() !== 'production' ? (new Cache($this->storage))->call('time') : \time();
+		$template->ts = $this->application->getEnvironment() === 'production' ? (new Cache($this->storage))->call('time') : \time();
 		
 		if ($page !== null && !($page instanceof Page)) {
 			return;
