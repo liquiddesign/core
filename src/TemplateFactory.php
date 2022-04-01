@@ -9,6 +9,7 @@ use Nette\Application\UI\Template;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
 use Nette\Localization\Translator;
+use Nette\Utils\Strings;
 use Pages\DB\Page;
 use Pages\Pages;
 
@@ -27,12 +28,12 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 	public Storage $storage;
 	
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	public array $flagsMap;
 	
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	public array $mutations;
 	
@@ -52,7 +53,7 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 
 		[$module] = \Nette\Application\Helpers::splitName($template->control->getName());
 		
-		\substr($module, -5) !== 'Admin' ? $this->setFrontendPresenterParameters($template) : $this->setBackendPresenterParameters($template);
+		Strings::substring($module, -5) !== 'Admin' ? $this->setFrontendPresenterParameters($template) : $this->setBackendPresenterParameters($template);
 	}
 	
 	public function addFilters(Template $template): void

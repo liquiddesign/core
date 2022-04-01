@@ -11,7 +11,7 @@ use Nette\Routing\Router;
 class Application extends \Nette\Application\Application
 {
 	/**
-	 * @var callable[] Occurs when entity in repository is updated
+	 * @var array<callable> Occurs when entity in repository is updated
 	 */
 	public array $onMutationChange = [];
 	
@@ -20,7 +20,7 @@ class Application extends \Nette\Application\Application
 	private string $mutation;
 	
 	/**
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	private array $locales;
 	
@@ -54,7 +54,7 @@ class Application extends \Nette\Application\Application
 				
 				foreach ($environments as $environment => $patterns) {
 					foreach ($patterns ?? [] as $pattern) {
-						if (\strpos($httpRequest->getUrl()->getBaseUrl(), $pattern) !== false) {
+						if (Nette\Utils\Strings::contains($httpRequest->getUrl()->getBaseUrl(), $pattern) !== false) {
 							$this->environment = $environment;
 
 							break;

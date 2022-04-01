@@ -10,7 +10,9 @@ use Nette\Caching\Storage;
 use Nette\FileNotFoundException;
 use Nette\Neon\Neon;
 use Nette\Security\Passwords;
+use Nette\Utils\Arrays;
 use Nette\Utils\FileSystem;
+use Nette\Utils\Strings;
 use StORM\Connection;
 use StORM\DIConnection;
 use Tracy\Debugger;
@@ -48,7 +50,7 @@ abstract class Scripts
 	{
 		$arguments = $event->getArguments();
 		
-		if (!isset($arguments[0]) || !\in_array($arguments[0], ['on', 'off'])) {
+		if (!isset($arguments[0]) || !Arrays::contains(['on', 'off'], $arguments[0])) {
 			$event->getIO()->writeError('ERROR: Missing argument on|off!');
 
 			return;
@@ -161,7 +163,7 @@ abstract class Scripts
 			return;
 		}
 		
-		$connection->query("CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;", [], [$projectName]);
+		$connection->query('CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;', [], [$projectName]);
 		unset($connection);
 		
 		$container = static::createConfigurator()->createContainer();
@@ -180,7 +182,7 @@ abstract class Scripts
 			
 			if ($stm->findRepository(static::getAccountEntityClass())->many()->where('uuid', 'servis')->isEmpty()) {
 				while (!$password = $event->getIO()->askAndHideAnswer('Enter "servis" password:')) {
-					$event->getIO()->writeError("ERROR: password cannot be empty");
+					$event->getIO()->writeError('ERROR: password cannot be empty');
 				}
 				
 				$password = $passwords->hash($password);
@@ -199,6 +201,7 @@ abstract class Scripts
 					return;
 				}
 				
+				// @codingStandardsIgnoreLine
 				foreach (Neon::decode(\str_replace(\array_keys($parameters), \array_values($parameters), \file_get_contents("$dataDir/$dataFile.neon"))) ?? [] as $values) {
 					$stm->findRepository($values->value)->syncOne($values->attributes);
 				}
@@ -213,7 +216,7 @@ abstract class Scripts
 		$productionDir = 'www';
 		
 		if (\basename(\dirname(static::getRootDirectory(), 2)) === $productionDir) {
-			$event->getIO()->writeError("!! WARNING: Script is available only on develop or staging environment !!");
+			$event->getIO()->writeError('!! WARNING: Script is available only on develop or staging environment !!');
 		}
 		
 		Debugger::enable(Debugger::DETECT, static::getRootDirectory() . '/temp/log');
@@ -250,7 +253,7 @@ abstract class Scripts
 		/* Dump from production DB */
 		try {
 			$dump = new Mysqldump(
-				"mysql:host=" . $dbConfig['storm']['connections']['production']['host'] . ";dbname=" . $dbConfig['storm']['connections']['production']['dbname'],
+				'mysql:host=' . $dbConfig['storm']['connections']['production']['host'] . ';dbname=' . $dbConfig['storm']['connections']['production']['dbname'],
 				$dbConfig['storm']['connections']['production']['user'],
 				$dbConfig['storm']['connections']['production']['password'],
 				[],
@@ -280,7 +283,7 @@ abstract class Scripts
 			
 			/** @var \StORM\DIConnection $stm */
 			$stm = $container->getByType(DIConnection::class);
-			$stm->exec("SET foreign_key_checks = 0;");
+			$stm->exec('SET foreign_key_checks = 0;');
 			$dbName = $stm->getDatabaseName();
 			$dropTableList = $stm->query("SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;') FROM information_schema.tables WHERE table_schema = '$dbName';")->fetchAll(\PDO::FETCH_COLUMN);
 			
@@ -288,20 +291,20 @@ abstract class Scripts
 				$stm->exec($dropTable);
 			}
 			
-			$stm->exec("SET foreign_key_checks = 1;");
+			$stm->exec('SET foreign_key_checks = 1;');
 			
 			$event->getIO()->write('- develop DB tables dropped');
 			
 			while (($line = \fgets($fp)) !== false) {
 				// Skip it if it's a comment
-				if (\substr($line, 0, 2) === '--' || $line === '') {
+				if (Strings::substring($line, 0, 2) === '--' || $line === '') {
 					continue;
 				}
 				
 				$templine .= $line;
 				
 				// If it has a semicolon at the end, it's the end of the query
-				if (\substr(\trim($line), -1, 1) !== ';') {
+				if (Strings::substring(Strings::trim($line), -1, 1) !== ';') {
 					continue;
 				}
 				
@@ -315,8 +318,8 @@ abstract class Scripts
 			
 			$event->getIO()->write('- production DB imported to develop');
 		} catch (\Throwable $e) {
-			$event->getIO()->writeError("!! Error importing: " . $e->getMessage());
-			Debugger::log("Error importing: " . $e->getMessage(), ILogger::ERROR);
+			$event->getIO()->writeError('!! Error importing: ' . $e->getMessage());
+			Debugger::log('Error importing: ' . $e->getMessage(), ILogger::ERROR);
 		}
 		
 		FileSystem::delete($filename);
@@ -329,7 +332,7 @@ abstract class Scripts
 		$productionDir = 'www';
 		
 		if (\basename(\dirname(static::getRootDirectory(), 2)) === $productionDir) {
-			$event->getIO()->writeError("!! WARNING: Script is available only on develop or staging environment !!");
+			$event->getIO()->writeError('!! WARNING: Script is available only on develop or staging environment !!');
 		}
 		
 		$event->getIO()->write('--- START ---');
