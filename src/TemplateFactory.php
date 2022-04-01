@@ -88,7 +88,7 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 		$template->headTitle = $page ? ($page->getType() === 'index' ? $page->title : $page->title . ' | ' . $this->getBaseTitle()) : $this->getBaseTitle();
 		$template->headDescription = $page ? $page->description : null;
 		$template->headCanonical = $page ? $page->canonicalUrl : null;
-		$template->headRobots = $this->application->getEnvironment() !== 'test' ? ($page ? $page->robots : 'index, follow') : 'noindex, nofollow';
+		$template->headRobots = $this->application->getEnvironment() === 'production' ? ($page ? $page->robots : 'index, follow') : 'noindex, nofollow';
 	}
 	
 	protected function setBackendPresenterParameters(Template $template): void
