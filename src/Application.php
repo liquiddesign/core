@@ -32,6 +32,7 @@ class Application extends \Nette\Application\Application
 		array $mutations,
 		array $locales,
 		array $environments,
+		?array $allowedHosts,
 		IPresenterFactory $presenterFactory,
 		Router $router,
 		Nette\Http\IRequest $httpRequest,
@@ -47,18 +48,23 @@ class Application extends \Nette\Application\Application
 		
 		$this->setMutation($mutations[0]);
 		
-		$this->onRequest[] = function (Nette\Application\Application $app, Nette\Application\Request $request) use ($environments, $httpRequest): void {
-			/** @var \Base\Application $app */
-			if ($lang = $request->getParameter($app->mutationRequestParameter)) {
-				$app->setMutation($lang);
-				
-				foreach ($environments as $environment => $patterns) {
-					foreach ($patterns ?? [] as $pattern) {
-						if (Nette\Utils\Strings::contains($httpRequest->getUrl()->getBaseUrl(), $pattern) !== false) {
-							$this->environment = $environment;
+		$this->onRequest[] = function (\Base\Application $app, Nette\Application\Request $request) use ($allowedHosts, $environments, $httpRequest): void {
+			if ($allowedHosts && !Nette\Utils\Arrays::contains($allowedHosts, $httpRequest->getHeader('host'))) {
+				throw new Nette\Application\BadRequestException('Not allowed HTTP HOST');
+			}
+			
+			if (!$lang = $request->getParameter($app->mutationRequestParameter)) {
+				return;
+			}
 
-							break;
-						}
+			$app->setMutation($lang);
+			
+			foreach ($environments as $environment => $patterns) {
+				foreach ($patterns ?? [] as $pattern) {
+					if (Nette\Utils\Strings::contains($httpRequest->getUrl()->getBaseUrl(), $pattern) !== false) {
+						$this->environment = $environment;
+
+						break;
 					}
 				}
 			}
