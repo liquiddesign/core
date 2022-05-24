@@ -12,6 +12,7 @@ use Nette\Neon\Neon;
 use Nette\Security\Passwords;
 use Nette\Utils\Arrays;
 use Nette\Utils\FileSystem;
+use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use StORM\Connection;
 use StORM\DIConnection;
@@ -44,6 +45,18 @@ abstract class Scripts
 		static::clearCache();
 
 		$event->getIO()->write('Nette cache was cleaned.');
+	}
+	
+	public static function clearLog(Event $event): void
+	{
+		$dir = static::getRootDirectory() . '/temp/log';
+		
+		foreach (Finder::findFiles()->from($dir) as $key => $file) {
+			unset($file);
+			FileSystem::delete($key);
+		}
+		
+		$event->getIO()->write('Log was cleaned.');
 	}
 	
 	public static function maintenance(Event $event): void
@@ -349,6 +362,11 @@ abstract class Scripts
 	
 	protected static function clearCache(): void
 	{
-		FileSystem::delete(static::getRootDirectory() . '/temp/cache');
+		$dir = static::getRootDirectory() . '/temp/cache';
+		
+		foreach (Finder::findFiles()->from($dir) as $key => $file) {
+			unset($file);
+			FileSystem::delete($key);
+		}
 	}
 }
