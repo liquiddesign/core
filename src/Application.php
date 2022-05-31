@@ -50,7 +50,7 @@ class Application extends \Nette\Application\Application
 		
 		$this->onRequest[] = function (\Base\Application $app, Nette\Application\Request $request) use ($allowedHosts, $environments, $httpRequest): void {
 			if ($allowedHosts && !Nette\Utils\Arrays::contains($allowedHosts, $httpRequest->getHeader('host'))) {
-				throw new Nette\Application\BadRequestException('Not allowed HTTP HOST');
+				throw new Nette\Application\BadRequestException('Not allowed HTTP HOST: ' . $httpRequest->getHeader('host'));
 			}
 			
 			if (!$lang = $request->getParameter($app->mutationRequestParameter)) {
