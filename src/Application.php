@@ -29,14 +29,14 @@ class Application extends \Nette\Application\Application
 	private ?string $locale = null;
 	
 	public function __construct(
-		IPresenterFactory $presenterFactory,
-		Router $router,
-		Nette\Http\IRequest $httpRequest,
-		Nette\Http\IResponse $httpResponse,
 		array $mutations,
 		array $locales,
 		array $environments,
-		?array $allowedHosts = null
+		?array $allowedHosts,
+		IPresenterFactory $presenterFactory,
+		Router $router,
+		Nette\Http\IRequest $httpRequest,
+		Nette\Http\IResponse $httpResponse
 	) {
 		parent::__construct($presenterFactory, $router, $httpRequest, $httpResponse);
 		
