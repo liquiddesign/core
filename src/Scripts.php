@@ -26,6 +26,31 @@ abstract class Scripts
 	abstract protected static function createConfigurator(): Configurator;
 	
 	abstract protected static function getAccountEntityClass(): string;
+	
+	public static function latteLint(Event $event): void
+	{
+		$container = static::createConfigurator()->createContainer();
+		
+		$arguments = $event->getArguments();
+		
+		if (!isset($arguments[0])) {
+			$event->getIO()->writeError('ERROR: Missing argument path');
+			
+			return;
+		}
+		
+		/** @var \Base\TemplateFactory $factory */
+		$factory = $container->getByType(TemplateFactory::class);
+		
+		$linter = new \Latte\Tools\Linter($factory->createTemplate()->getLatte(), true);
+		$ok = $linter->scanDirectory($arguments[0]);
+		
+		if (!$ok) {
+			$event->getIO()->writeError('Nastala chyba.');
+		}
+		
+		$event->getIO()->write('Hotovo.');
+	}
 
 	public static function clearEshopCategoriesProductCache(Event $event): void
 	{

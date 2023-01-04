@@ -20,6 +20,7 @@
 		"liquiddesign/storm":"^1.0",
 		"liquiddesign/pages":"^1.0",
 		"liquiddesign/migrator":"^1.0",
+		"latte/latte": "^v2.11.0",
 		"ifsnop/mysqldump-php": "^2.9",
 		"ext-pdo": "*"
 	},
