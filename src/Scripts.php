@@ -7,6 +7,7 @@ use Ifsnop\Mysqldump\Mysqldump;
 use Nette\Bootstrap\Configurator;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
+use Nette\DI\MissingServiceException;
 use Nette\FileNotFoundException;
 use Nette\Neon\Neon;
 use Nette\Security\Passwords;
@@ -14,6 +15,7 @@ use Nette\Utils\Arrays;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
+use SlackLogger\Logger;
 use StORM\Connection;
 use StORM\DIConnection;
 use Tracy\Debugger;
@@ -383,6 +385,60 @@ abstract class Scripts
 		FileSystem::copy($productionUserfilesDir, $developUserfilesDir);
 		
 		$event->getIO()->write('--- FINISH -- ');
+	}
+
+	public static function deployCheck(Event $event): void
+	{
+		$rootDir = __DIR__ . '/../../../..';
+
+		if (\is_file($rootDir . '/maintenance.php')) {
+			$event->getIO()->write('Deploy is already running ... exiting');
+
+			die;
+		}
+
+		$deployLogPath = $rootDir . '/temp/log/deploy_log.txt';
+
+		if (!\is_file($deployLogPath)) {
+			$event->getIO()->write('No deploy logged');
+
+			if (!$event->getIO()->askConfirmation('Do you really want to proceed? (n)', false)) {
+				die;
+			}
+
+			\touch($deployLogPath);
+		} else {
+			$firstLog = Strings::before(FileSystem::read($deployLogPath), "\n");
+
+			$event->getIO()->write("Last deploy logged: $firstLog");
+
+			if (!$event->getIO()->askConfirmation('Do you really want to proceed? (n)', false)) {
+				die;
+			}
+		}
+
+		$container = static::createConfigurator()->createContainer();
+
+		try {
+			$logger = $container->getByType(Logger::class);
+		} catch (MissingServiceException $e) {
+			return;
+		}
+
+		$logger->sentToSlack($logger->getSlackUrl(), 'Deploy done', ILogger::INFO);
+	}
+
+	public static function deployDone(Event $event): void
+	{
+		unset($event);
+
+		$rootDir = __DIR__ . '/../../../..';
+		$deployLogPath = $rootDir . '/temp/log/deploy_log.txt';
+
+		$currentTimeString = (new \DateTime())->format('Y-m-d H:i:s');
+		$lastDeployLog = FileSystem::read($deployLogPath);
+
+		FileSystem::write($deployLogPath, $currentTimeString . "\n" . $lastDeployLog);
 	}
 	
 	protected static function clearCache(): void

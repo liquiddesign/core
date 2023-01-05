@@ -22,7 +22,8 @@
 		"liquiddesign/migrator":"^1.0",
 		"latte/latte": "^v2.11.0",
 		"ifsnop/mysqldump-php": "^2.9",
-		"ext-pdo": "*"
+		"ext-pdo": "*",
+		"liquiddesign/slack-logger": "^0.0.8"
 	},
 	"require-dev":
 	{
