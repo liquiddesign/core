@@ -416,16 +416,6 @@ abstract class Scripts
 				die;
 			}
 		}
-
-		$container = static::createConfigurator()->createContainer();
-
-		try {
-			$logger = $container->getByType(Logger::class);
-		} catch (MissingServiceException $e) {
-			return;
-		}
-
-		$logger->sentToSlack($logger->getSlackUrl(), 'Deploy done', ILogger::INFO);
 	}
 
 	public static function deployDone(Event $event): void
@@ -439,6 +429,16 @@ abstract class Scripts
 		$lastDeployLog = FileSystem::read($deployLogPath);
 
 		FileSystem::write($deployLogPath, $currentTimeString . "\n" . $lastDeployLog);
+
+		$container = static::createConfigurator()->createContainer();
+
+		try {
+			$logger = $container->getByType(Logger::class);
+		} catch (MissingServiceException $e) {
+			return;
+		}
+
+		$logger->sentToSlack($logger->getSlackUrl(), 'Deploy done', ILogger::INFO);
 	}
 	
 	protected static function clearCache(): void
