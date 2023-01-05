@@ -11,7 +11,7 @@ use Latte\Sandbox\SecurityPolicy;
 use Nette\Application\UI\Component;
 use Nette\Application\UI\Template;
 use Nette\Bridges\ApplicationLatte\LatteFactory;
-use Nette\Bridges\ApplicationLatte\UIMacros;
+use Nette\Bridges\ApplicationLatte\UIExtension;
 
 abstract class WidgetTemplateFactory extends TemplateFactory
 {
@@ -52,11 +52,11 @@ abstract class WidgetTemplateFactory extends TemplateFactory
 		}
 		
 		$policy = SecurityPolicy::createSafePolicy();
-		$policy->allowMacros(['control']);
+		$policy->allowTags(['control']);
 		
 		$latte = $this->latteFactory->create();
-		UIMacros::install($latte->getCompiler());
 		$latte->addProvider('uiControl', $rootControl);
+		$latte->addExtension(new UIExtension(null));
 		$latte->setLoader(new StringLoader());
 		$latte->setPolicy($policy);
 		$latte->setSandboxMode();
