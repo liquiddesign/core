@@ -63,7 +63,6 @@ abstract class WidgetTemplateFactory extends TemplateFactory
 		}
 		
 		$latte = $this->latteFactory->create();
-		$latte->addProvider('uiControl', $rootControl);
 
 		/** @phpstan-ignore-next-line @TODO LATTEV3 */
 		if (\version_compare(\Latte\Engine::VERSION, '3', '<')) {
@@ -72,6 +71,8 @@ abstract class WidgetTemplateFactory extends TemplateFactory
 		} else {
 			$latte->addExtension(new UIExtension(null));
 		}
+
+		$latte->addProvider('uiControl', $rootControl);
 
 		$latte->setLoader(new StringLoader());
 		$latte->setPolicy($policy);
