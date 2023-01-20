@@ -23,7 +23,7 @@
 		"latte/latte": "~2.0 || ~3.0",
 		"ifsnop/mysqldump-php": "^2.9",
 		"ext-pdo": "*",
-		"liquiddesign/slack-logger": "^0.0.8"
+		"liquiddesign/slack-logger": "^0.0.9"
 	},
 	"require-dev":
 	{
