@@ -438,7 +438,7 @@ abstract class Scripts
 			return;
 		}
 
-		$logger->sentToSlack($logger->getSlackUrl(), 'Deploy done', ILogger::INFO);
+		$logger->sentInfoToSlack('Deploy done');
 	}
 	
 	protected static function clearCache(): void
