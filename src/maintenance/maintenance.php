@@ -33,7 +33,7 @@ class MaintenancePanel implements Tracy\IBarPanel
 Tracy\Debugger::getBar()->addPanel(new MaintenancePanel());
 
 /** @var \Nette\DI\Container $container */
-if ($container->getParameters()['debugMode'] || $container->getParameters()['trustedMode']) {
+if ($container->getParameters()['debugMode']) {
 	/** @var \Base\Application $application */
 	$application->run();
 
