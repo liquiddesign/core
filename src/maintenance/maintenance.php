@@ -9,12 +9,24 @@ class MaintenancePanel implements Tracy\IBarPanel
 </svg>
 
 	<span class="tracy-label">Maintenance mode ON</span>
+	<script defer>
+   const body = document.querySelector(\'body\');
+   const maintananceEl = document.createElement(\'div\');
+   maintananceEl.style.color = \'white\';
+   maintananceEl.style.backgroundColor = \'red\';
+   maintananceEl.style.textAlign = \'center\';
+   maintananceEl.style.padding = \'5px 10px\';
+   maintananceEl.style.fontWeight = \'bold\';
+   maintananceEl.textContent = \'Maintenance mode ON\';
+
+   body.prepend(maintananceEl);
+</script>
 </span>';
 	}
 
 	public function getPanel()
 	{
-        return '';
+		return '';
 	}
 }
 
@@ -22,7 +34,7 @@ Tracy\Debugger::getBar()->addPanel(new MaintenancePanel());
 
 /** @var \Nette\DI\Container $container */
 if ($container->getParameters()['debugMode'] || $container->getParameters()['trustedMode']) {
-    /** @var \Base\Application $application */
+	/** @var \Base\Application $application */
 	$application->run();
 
 	exit;
@@ -61,55 +73,55 @@ $text = $czOrSk
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
 
 		<style>
-            * {
-                box-sizing: border-box;
-            }
+			* {
+				box-sizing: border-box;
+			}
 
-            html {
-                background: rgb(242,242,242);
-                background: linear-gradient(180deg, rgba(242,242,242,1) 0%, rgba(255,255,255,1) 100%);
-            }
+			html {
+				background: rgb(242,242,242);
+				background: linear-gradient(180deg, rgba(242,242,242,1) 0%, rgba(255,255,255,1) 100%);
+			}
 
-            body {
-                font-family: 'Open Sans', 'Roboto', sans-serif;
-                line-height: 1.5;
-                padding: 0;
-                margin: 0;
-            }
+			body {
+				font-family: 'Open Sans', 'Roboto', sans-serif;
+				line-height: 1.5;
+				padding: 0;
+				margin: 0;
+			}
 
-            h1 {
-                font-size: 32px;
-                font-weight: 800;
-                line-height: 1.15;
-            }
+			h1 {
+				font-size: 32px;
+				font-weight: 800;
+				line-height: 1.15;
+			}
 
-            p {
-                font-size: 20px;
-                font-weight: 300;
-                margin-top: 0;
-            }
+			p {
+				font-size: 20px;
+				font-weight: 300;
+				margin-top: 0;
+			}
 
-            .container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-                max-width: 900px;
-                margin: 0 auto;
-                padding: 0 15px;
-                text-align: center;
-            }
+			.container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				max-width: 900px;
+				margin: 0 auto;
+				padding: 0 15px;
+				text-align: center;
+			}
 
-            @media (min-width: 992px) {
-                h1 {
-                    font-size: 72px;
-                }
+			@media (min-width: 992px) {
+				h1 {
+					font-size: 72px;
+				}
 
-                p {
-                    font-size: 32px;
-                }
-            }
+				p {
+					font-size: 32px;
+				}
+			}
 		</style>
 	</head>
 
