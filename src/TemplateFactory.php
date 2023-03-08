@@ -8,6 +8,7 @@ use Nette\Application\UI\Presenter;
 use Nette\Application\UI\Template;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
+use Nette\DI\Container;
 use Nette\Localization\Translator;
 use Nette\Utils\Strings;
 use Pages\DB\Page;
@@ -26,6 +27,9 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 	
 	/** @inject */
 	public Storage $storage;
+
+	/** @inject */
+	public Container $container;
 	
 	/**
 	 * @var array<string>
@@ -90,6 +94,7 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 		$template->headDescription = $page ? $page->description : null;
 		$template->headCanonical = $page ? $page->canonicalUrl : null;
 		$template->headRobots = $this->application->getEnvironment() === 'production' ? ($page && $page->robots ? $page->robots : 'index, follow') : 'noindex, nofollow';
+		$template->maintenanceMode = $this->container->getParameters()['maintenanceMode'] ?? false;
 	}
 	
 	protected function setBackendPresenterParameters(Template $template): void

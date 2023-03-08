@@ -35,7 +35,7 @@
 	},
 	"scripts": {
 		"phpstan": "phpstan analyse --memory-limit 1G -c phpstan.neon",
-		"phpcs": "phpcs --standard=ruleset.xml --ignore=assets src",
+		"phpcs": "phpcs --standard=ruleset.xml --ignore=\"assets,maintenance.php\" src",
 		"phpcsfix": "phpcbf --standard=ruleset.xml --ignore=assets src",
 		"tester": "tester tests/Cases/*.phpt  -c tests/php.ini --setup tests/setup.php"
 	},

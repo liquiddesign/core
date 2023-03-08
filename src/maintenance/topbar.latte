@@ -1,0 +1,5 @@
+{default bool $maintenanceMode = false}
+
+<div n:if="isset($maintenanceMode) && $maintenanceMode" style="width: 100%; background-color: red; color: white; font-weight: bold; text-align: center; top:0; position:sticky; z-index:99999">
+    Maintenance mode ON
+</div>
