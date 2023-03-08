@@ -26,7 +26,6 @@ class Bootstrap
 			'appDir' => $dir,
 			'debugMode' => $debugMode,
 			'productionMode' => !$debugMode,
-			'maintenanceMode' => \is_file($dir . '/../maintenance.php'),
 		]);
 		
 		$configurator->enableTracy($dir . '/../temp/log');
