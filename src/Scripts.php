@@ -400,7 +400,7 @@ abstract class Scripts
 		if (!\is_file($deployLogPath)) {
 			$event->getIO()->write('No deploy logged');
 
-			if (!$event->getIO()->askConfirmation('Do you really want to proceed? (n)', false)) {
+			if (!$event->getIO()->askConfirmation('Do you really want to proceed? (y)')) {
 				die;
 			}
 
@@ -410,7 +410,7 @@ abstract class Scripts
 
 			$event->getIO()->write("Last deploy logged: $firstLog");
 
-			if (!$event->getIO()->askConfirmation('Do you really want to proceed? (n)', false)) {
+			if (!$event->getIO()->askConfirmation('Do you really want to proceed? (y)')) {
 				die;
 			}
 		}
