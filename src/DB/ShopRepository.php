@@ -13,6 +13,8 @@ use StORM\SchemaManager;
  */
 class ShopRepository extends Repository
 {
+	private Shop|null $selectedShop;
+
 	public function __construct(DIConnection $connection, SchemaManager $schemaManager, private readonly Request $request)
 	{
 		parent::__construct($connection, $schemaManager);
@@ -23,17 +25,21 @@ class ShopRepository extends Repository
 	 */
 	public function getSelectedShop(): Shop|null
 	{
+		if (isset($this->selectedShop)) {
+			return $this->selectedShop;
+		}
+
 		$code = $this->request->getQuery('shop');
 
 		if ($code) {
-			return $this->many()->where('this.uuid', $code)->first();
+			return $this->selectedShop ??= $this->many()->where('this.uuid', $code)->first();
 		}
 
 		$host = $this->request->getUrl()->getHost();
 
 		foreach ($this->many() as $shop) {
 			if (Strings::contains(Strings::lower($host), Strings::lower($shop->baseUrl))) {
-				return $shop;
+				return $this->selectedShop ??= $shop;
 			}
 		}
 

@@ -423,7 +423,7 @@ abstract class Scripts
 		$rootDir = __DIR__ . '/../../../..';
 		$deployLogPath = $rootDir . '/temp/log/deploy_log.txt';
 
-		$currentTimeString = (new \DateTime())->format('Y-m-d H:i:s');
+		$currentTimeString = (new \Carbon\Carbon())->format('Y-m-d H:i:s');
 		$lastDeployLog = FileSystem::read($deployLogPath);
 
 		FileSystem::write($deployLogPath, $currentTimeString . "\n" . $lastDeployLog);

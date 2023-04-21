@@ -20,7 +20,8 @@
 		"latte/latte": "~3.0",
 		"ifsnop/mysqldump-php": "^2.9",
 		"ext-pdo": "*",
-		"liquiddesign/slack-logger": "^0.0.9"
+		"liquiddesign/slack-logger": "^0.0.9",
+		"nesbot/carbon": "~2.66"
 	},
 	"require-dev":
 	{
