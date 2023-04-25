@@ -8,6 +8,7 @@ use Nette\Application\UI\Presenter;
 use Nette\Application\UI\Template;
 use Nette\Caching\Cache;
 use Nette\Caching\Storage;
+use Nette\DI\Attributes\Inject;
 use Nette\Localization\Translator;
 use Nette\Utils\Strings;
 use Pages\DB\Page;
@@ -26,6 +27,9 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 	
 	/** @inject */
 	public Storage $storage;
+
+	#[Inject]
+	public ShopsConfig $shopsConfig;
 	
 	/**
 	 * @var array<string>
@@ -81,6 +85,7 @@ abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateF
 		$template->lang = $template->control->lang ?? null;
 		$template->langs = $this->mutations;
 		$template->ts = $this->application->getEnvironment() === 'production' ? (new Cache($this->storage))->call('time') : \time();
+		$template->shop = $this->shopsConfig->getSelectedShop();
 		
 		if ($page !== null && !($page instanceof Page)) {
 			return;
