@@ -4,6 +4,7 @@ namespace Base;
 
 use Base\DB\Shop;
 use Base\DB\ShopRepository;
+use Nette\DI\Container;
 use Nette\Http\Request;
 use Nette\Utils\Strings;
 
@@ -13,8 +14,11 @@ class ShopsConfig
 
 	private Shop|null $selectedShop;
 
-	public function __construct(private readonly ShopRepository $shopRepository, private readonly Request $request,)
-	{
+	public function __construct(
+		private readonly ShopRepository $shopRepository,
+		private readonly Request $request,
+		private readonly Container $container,
+	) {
 	}
 
 	public function setConfig(\stdClass $config): void
@@ -36,21 +40,33 @@ class ShopsConfig
 			return $this->selectedShop;
 		}
 
+		$debugMode = $this->container->getParameters()['debugMode'];
+
+		$selectedShop = null;
+
 		$code = $this->request->getQuery('shop');
 
 		if ($code) {
-			return $this->selectedShop ??= $this->shopRepository->many()->where('this.uuid', $code)->first();
+			$selectedShop = $this->shopRepository->many()->where('this.uuid', $code)->first();
 		}
 
 		$host = $this->request->getUrl()->getHost();
 
-		foreach ($this->shopRepository->many() as $shop) {
-			if (Strings::contains(Strings::lower($host), Strings::lower($shop->baseUrl))) {
-				return $this->selectedShop ??= $shop;
+		if (!$selectedShop) {
+			foreach ($this->shopRepository->many() as $shop) {
+				if (Strings::contains(Strings::lower($host), Strings::lower($shop->baseUrl))) {
+					$selectedShop = $shop;
+
+					break;
+				}
 			}
 		}
 
-		return null;
+		if (!$selectedShop && $debugMode) {
+			$selectedShop = $this->shopRepository->many()->first();
+		}
+
+		return $this->selectedShop ??= $selectedShop;
 	}
 
 	/**
