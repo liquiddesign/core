@@ -27,22 +27,11 @@ class ShopsConfig
 		return $this->config->shopSpecificProperties;
 	}
 
-	public function isShopRequired(): bool
-	{
-		return $this->config->shopRequired;
-	}
-
 	/**
 	 * Returns shop by code in GET parameter or parse from domain
 	 */
 	public function getSelectedShop(): Shop|null
 	{
-		$defaultShop = $this->shopRepository->many()->first();
-
-		if (!$defaultShop && $this->isShopRequired()) {
-			throw new \Exception('Shop required by config, but no shop found.');
-		}
-
 		if (isset($this->selectedShop)) {
 			return $this->selectedShop;
 		}
@@ -65,7 +54,7 @@ class ShopsConfig
 	}
 
 	/**
-	 * @return array<Shop
+	 * @return array<\Base\DB\Shop>
 	 */
 	public function getAvailableShops(): array
 	{
