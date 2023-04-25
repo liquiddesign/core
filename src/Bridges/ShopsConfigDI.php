@@ -11,6 +11,7 @@ class ShopsConfigDI extends CompilerExtension
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
 		return Nette\Schema\Expect::structure([
+			'shopRequired' => Nette\Schema\Expect::bool(false),
 			'shopSpecificProperties' => Nette\Schema\Expect::arrayOf('string'),
 		]);
 	}
