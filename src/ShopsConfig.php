@@ -52,4 +52,12 @@ class ShopsConfig
 
 		return null;
 	}
+
+	/**
+	 * @return array<\Base\DB\Shop>
+	 */
+	public function getAvailableShops(): array
+	{
+		return $this->shopRepository->many()->toArray();
+	}
 }
