@@ -26,11 +26,6 @@ class ShopsConfig
 		$this->config = $config;
 	}
 
-	public function getShopSpecificProperties(): \stdClass
-	{
-		return $this->config->shopSpecificProperties;
-	}
-
 	/**
 	 * Returns shop by code in GET parameter or parse from domain
 	 */

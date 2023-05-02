@@ -16,7 +16,16 @@ class ShopRepository extends Repository implements IGeneralRepository
 	 */
 	public function getArrayForSelect(bool $includeHidden = true): array
 	{
-		return $this->getCollection($includeHidden)->toArrayOf('name');
+		return $this->toArrayForSelect($this->getCollection($includeHidden));
+	}
+
+	/**
+	 * @param \StORM\Collection<\Base\DB\Shop> $collection
+	 * @return array<string>
+	 */
+	public function toArrayForSelect(Collection $collection): array
+	{
+		return $collection->toArrayOf('name');
 	}
 
 	public function getCollection(bool $includeHidden = false): Collection

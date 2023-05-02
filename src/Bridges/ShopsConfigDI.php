@@ -10,9 +10,7 @@ class ShopsConfigDI extends CompilerExtension
 {
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
-		return Nette\Schema\Expect::structure([
-			'shopSpecificProperties' => Nette\Schema\Expect::arrayOf('string'),
-		]);
+		return Nette\Schema\Expect::structure([]);
 	}
 
 	public function loadConfiguration(): void
