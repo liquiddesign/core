@@ -7,6 +7,7 @@ use Base\DB\ShopRepository;
 use Nette\DI\Container;
 use Nette\Http\Request;
 use Nette\Utils\Strings;
+use StORM\ICollection;
 
 class ShopsConfig
 {
@@ -70,5 +71,36 @@ class ShopsConfig
 	public function getAvailableShops(): array
 	{
 		return $this->shopRepository->many()->toArray();
+	}
+
+	/**
+	 * Filters collection by supplied shop(s). If no shops supplied, filters by selected shop.
+	 * @template T of object
+	 * @param \StORM\ICollection<T> $collection
+	 * @param string|array<\Base\DB\Shop|string>|null|\Base\DB\Shop $shops
+	 * @param bool $showOnlyEntitiesWithSelectedShops False - Shows entities which have specified shop(s) or NULL | True - Shows only entities which have specified shop(s).
+	 * @return \StORM\ICollection<T>
+	 */
+	public function filterShopsInShopEntityCollection(ICollection $collection, string|null|array|Shop $shops = null, bool $showOnlyEntitiesWithSelectedShops = false,): ICollection
+	{
+		$shopsToBeFiltered = [];
+
+		if (!$showOnlyEntitiesWithSelectedShops) {
+			$shopsToBeFiltered[] = null;
+		}
+
+		if ($shops === null) {
+			$shopsToBeFiltered[] = $this->getSelectedShop()?->getPK();
+		} elseif (\is_string($shops)) {
+			$shopsToBeFiltered[] = $shops;
+		} elseif (\is_array($shops)) {
+			foreach ($shops as $shop) {
+				$shopsToBeFiltered[] = \is_string($shop) ? $shop : $shop->getPK();
+			}
+		} elseif ($shops instanceof Shop) {
+			$shopsToBeFiltered[] = $shops->getPK();
+		}
+
+		return $shopsToBeFiltered ? $collection->where('this.fk_shop', $shopsToBeFiltered) : $collection;
 	}
 }
