@@ -15,6 +15,11 @@ class ShopsConfig
 
 	private Shop|null $selectedShop;
 
+	/**
+	 * @var array<\Base\DB\Shop>
+	 */
+	private array $availableShops;
+
 	public function __construct(
 		private readonly ShopRepository $shopRepository,
 		private readonly Request $request,
@@ -70,7 +75,7 @@ class ShopsConfig
 	 */
 	public function getAvailableShops(): array
 	{
-		return $this->shopRepository->many()->toArray();
+		return $this->availableShops ??= $this->shopRepository->many()->toArray();
 	}
 
 	/**
