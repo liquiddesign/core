@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Functions to help with selection of entities in admin
 ### Changed
 
+- **BREAKING:** PHP version 8.2 or higher is required
+
 ### Removed
 
 ### Deprecated
