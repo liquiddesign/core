@@ -30,7 +30,7 @@ abstract class GeneralRepositoryHelpers
 				' ',
 				" . ($uniqueColumnName ? "CONCAT('(U:', $uniqueColumnName, ')')," : "'',") .
 				($systemic ? "IF($systemicCondition, '(systémový)', '')," : "'',") .
-				($shops ? "CONCAT('(O:', COALESCE(shop.code,'společný'), ')')," : "'',");
+				($shops ? "CONCAT('(O:', COALESCE(shop.uuid,'společný'), ')')," : "'',");
 
 		$middleConcatenates = Strings::substring($middleConcatenates, 0, -1);
 
