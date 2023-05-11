@@ -95,7 +95,9 @@ class ShopsConfig
 		}
 
 		if ($shops === null) {
-			$shopsToBeFiltered[] = $this->getSelectedShop()?->getPK();
+			if ($selectedShop = $this->getSelectedShop()) {
+				$shopsToBeFiltered[] = $selectedShop->getPK();
+			}
 		} elseif (\is_string($shops)) {
 			$shopsToBeFiltered[] = $shops;
 		} elseif (\is_array($shops)) {
