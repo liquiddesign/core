@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Base;
 
-use Nette\Application\UI\Presenter;
 use Nette\Application\UI\Template;
 use Nette\Caching\Storage;
 use Nette\DI\Attributes\Inject;
 use Nette\Localization\Translator;
-use Nette\Utils\Strings;
 
 abstract class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
 {
