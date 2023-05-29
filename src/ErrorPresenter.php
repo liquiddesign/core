@@ -7,7 +7,6 @@ namespace Base;
 use Nette;
 use Nette\Application\Responses;
 use Nette\Http;
-use Pages\Pages;
 use Tracy\ILogger;
 
 abstract class ErrorPresenter implements Nette\Application\IPresenter
@@ -16,9 +15,6 @@ abstract class ErrorPresenter implements Nette\Application\IPresenter
 	
 	/** @persistent */
 	public string $lang;
-	
-	/** @inject */
-	public Pages $pages;
 	
 	/** @inject */
 	public Http\Request $httpRequest;

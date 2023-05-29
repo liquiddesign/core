@@ -10,21 +10,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Shop entity to use multiple Shops on same database.
-- Service *ShopsConfig*
-  - Use *ShopsConfigDI* to register this service. 
+- Service `ShopsConfig`
+  - Use `ShopsConfigDI` to register this service. 
   - Use this service exclusively to get available Shops or currently selected Shop 
 - Helper classes to create entities:
-  - *ShopEntity*
-  - *ShopEntityTrait*
-  - *ShopSystemicEntity*
-  - *SystemicEntityTrait*
-- *GeneralRepositoryHelpers*
+  - `ShopEntity`
+  - `ShopEntityTrait`
+  - `ShopSystemicEntity`
+  - `SystemicEntityTrait`
+- `GeneralRepositoryHelpers`
   - Functions to help with selection of entities in admin
 ### Changed
 
 - **BREAKING:** PHP version 8.2 or higher is required
+- **BREAKING:** Some functions and properties from `TemplateFactory` are moved to new class `TemplateFactory` in package `liquiddesign/web`
+  - This change is bacause this package is no more dependent on `liquiddesign/pages` package
 
 ### Removed
+
+- **BREAKING:** Removed dependency on `liquiddesign/pages` package
+- **BREAKING:** `ErrorPresenter::pages` removed
 
 ### Deprecated
 
