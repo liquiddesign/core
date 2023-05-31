@@ -55,10 +55,14 @@ class ShopsConfig
 
 		if (!$selectedShop) {
 			foreach ($this->shopRepository->many() as $shop) {
-				if (Strings::contains(Strings::lower($host), Strings::lower($shop->baseUrl))) {
-					$selectedShop = $shop;
+				$baseUrls = \explode(';', Strings::lower($shop->baseUrl));
 
-					break;
+				foreach ($baseUrls as $baseUrl) {
+					if (Strings::contains(Strings::lower($host), $baseUrl)) {
+						$selectedShop = $shop;
+
+						break;
+					}
 				}
 			}
 		}

@@ -15,6 +15,7 @@ class Shop extends Entity
 	public string $name;
 
 	/**
+	 * Values separated by semicolon
 	 * @column
 	 */
 	public string $baseUrl;
