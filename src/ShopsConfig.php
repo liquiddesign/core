@@ -93,9 +93,10 @@ class ShopsConfig
 	public function filterShopsInShopEntityCollection(ICollection $collection, string|null|array|Shop $shops = null, bool $showOnlyEntitiesWithSelectedShops = false,): ICollection
 	{
 		$shopsToBeFiltered = [];
+		$orCondition = null;
 
 		if (!$showOnlyEntitiesWithSelectedShops) {
-			$shopsToBeFiltered[] = null;
+			$orCondition = ' OR this.fk_shop IS NULL';
 		}
 
 		if ($shops === null) {
@@ -112,6 +113,8 @@ class ShopsConfig
 			$shopsToBeFiltered[] = $shops->getPK();
 		}
 
-		return $shopsToBeFiltered ? $collection->where('this.fk_shop', $shopsToBeFiltered) : $collection;
+		$inString = $shopsToBeFiltered ? "'" . \implode("','", $shopsToBeFiltered) . "'" : null;
+
+		return $inString ? $collection->where("this.fk_shop IN ($inString)$orCondition") : $collection;
 	}
 }
