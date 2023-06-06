@@ -5,11 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-beta.3] - 2023-06-06
+
+### Changed
+
+- **BREAKING**: `GeneralRepositoryHelpers::selectFullName` and `GeneralRepositoryHelpers::toArrayOfFullName` are no longer static methods and moved to `ShopsConfig`.
+  - Methods are now using ShopsConfig to gain additional information.
+
+### Removed
+- **BREAKING:** `GeneralRepositoryHelpers` is removed.
+
 ## [2.0.0-beta.2] - 2023-06-02
 
 ### Changed
 
-- The GeneralRepositoryHelpers::selectFullName method does not display the entity shop label when no shops are available.
+- The `GeneralRepositoryHelpers::selectFullName` method does not display the entity shop label when no shops are available.
 
 ## [2.0.0-beta.1] - 2023-06-01
 

@@ -32,6 +32,11 @@ class ShopsConfig
 		$this->config = $config;
 	}
 
+	public function setSelectedShop(Shop $shop): void
+	{
+		$this->selectedShop = $shop;
+	}
+
 	/**
 	 * Returns shop by code in GET parameter or parse from domain
 	 */
@@ -116,5 +121,60 @@ class ShopsConfig
 		$inString = $shopsToBeFiltered ? "'" . \implode("','", $shopsToBeFiltered) . "'" : null;
 
 		return $inString ? $collection->where("this.fk_shop IN ($inString)$orCondition") : $collection;
+	}
+
+	/**
+	 * @template T of object
+	 * @param \StORM\ICollection<T> $collection
+	 * @param string $selectColumnName
+	 * @param string|null $uniqueColumnName
+	 * @param bool $systemic
+	 * @param bool $shops
+	 * @param bool $oldSystemicProperty
+	 * @param string|null $customSelect
+	 * @return \StORM\ICollection<T>
+	 */
+	public function selectFullNameInShopEntityCollection(
+		ICollection $collection,
+		string $selectColumnName = 'this.name',
+		?string $uniqueColumnName = null,
+		bool $systemic = true,
+		bool $shops = true,
+		bool $oldSystemicProperty = false,
+		?string $customSelect = null,
+	): ICollection {
+		$systemicCondition = 'this.systemicLock > 0';
+
+		if ($oldSystemicProperty) {
+			$systemicCondition .= ' OR this.systemic = 1';
+		}
+
+		$shops = $shops && $this->getAvailableShops();
+
+		$middleConcatenates = "$selectColumnName,
+				' ',
+				" . ($uniqueColumnName ? "CONCAT('(U:', $uniqueColumnName, ')')," : "'',") .
+			($systemic ? "IF($systemicCondition, '(systémový)', '')," : "'',") .
+			($shops ? "CONCAT('(O:', COALESCE(shop.uuid,'společný'), ')')," : "'',") .
+			($customSelect ? "CONCAT('(C:',$customSelect,')')," : "'',");
+
+		$middleConcatenates = Strings::substring($middleConcatenates, 0, -1);
+
+		return $collection->select(['fullName' => "CONCAT($middleConcatenates)"]);
+	}
+
+	/**
+	 * @template T of object
+	 * @param \StORM\ICollection<T> $collection
+	 * @param bool $selectFullName
+	 * @return array<string>
+	 */
+	public function shopEntityCollectionToArrayOfFullName(ICollection $collection, bool $selectFullName = false): array
+	{
+		if ($selectFullName) {
+			$this->selectFullNameInShopEntityCollection($collection);
+		}
+
+		return $collection->toArrayOf('fullName');
 	}
 }
