@@ -6,7 +6,7 @@ use Base\ShopsConfig;
 use Nette;
 use Nette\DI\CompilerExtension;
 
-class ShopsConfigDI extends CompilerExtension
+class BaseDI extends CompilerExtension
 {
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
