@@ -32,7 +32,7 @@ class ShopsConfig
 		$this->config = $config;
 	}
 
-	public function setSelectedShop(Shop $shop): void
+	public function setSelectedShop(Shop|null $shop): void
 	{
 		$this->selectedShop = $shop;
 	}
