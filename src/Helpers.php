@@ -2,6 +2,8 @@
 
 namespace Base;
 
+use Nette\Utils\Json;
+
 class Helpers
 {
 	/**
@@ -18,5 +20,15 @@ class Helpers
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param \SimpleXMLElement $xml
+	 * @return array<mixed>
+	 * @throws \Nette\Utils\JsonException
+	 */
+	public static function xmlToArray(\SimpleXMLElement $xml): array
+	{
+		return Json::decode(Json::encode((array) $xml), Json::FORCE_ARRAY);
 	}
 }
