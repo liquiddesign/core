@@ -88,6 +88,14 @@ class ShopsConfig
 	}
 
 	/**
+	 * @return array<string>
+	 */
+	public function getAvailableShopsArrayForSelect(): array
+	{
+		return $this->shopRepository->getArrayForSelect();
+	}
+
+	/**
 	 * Filters collection by supplied shop(s). If no shops supplied, filters by selected shop.
 	 * @template T of object
 	 * @param \StORM\ICollection<T> $collection
