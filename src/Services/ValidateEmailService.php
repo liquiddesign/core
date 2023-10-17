@@ -7,6 +7,7 @@ use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\DNSCheckValidation;
 use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 use Egulias\EmailValidator\Validation\RFCValidation;
+use Nette\Utils\Validators;
 
 class ValidateEmailService implements AutoWireService
 {
@@ -35,11 +36,11 @@ class ValidateEmailService implements AutoWireService
 	{
 		\trigger_deprecation('liquiddesign/package', '2.0', 'Using "%s" is deprecated, use "%s" instead.', 'validateWeakly', 'validate');
 
-		return $this->validator->isValid($email, $this->weakConditions);
+		return Validators::isEmail($email) && $this->validator->isValid($email, $this->weakConditions);
 	}
 
 	public function validate(string $email): bool
 	{
-		return $this->validator->isValid($email, $this->strictConditions);
+		return Validators::isEmail($email) && $this->validator->isValid($email, $this->strictConditions);
 	}
 }
