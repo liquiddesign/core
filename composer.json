@@ -21,7 +21,8 @@
 		"ext-pdo": "*",
 		"liquiddesign/slack-logger": "^0.0.9",
 		"nesbot/carbon": "~2.66",
-		"ext-simplexml": "*"
+		"ext-simplexml": "*",
+		"egulias/email-validator": "^3.2"
 	},
 	"require-dev":
 	{
