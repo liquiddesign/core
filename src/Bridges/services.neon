@@ -1,0 +1,5 @@
+search:
+    base_services:
+        in: %appDir%/../vendor/liquiddesign/base
+        files: [*/Services/*.php]
+        implements: Base\Bridges\AutoWireService
