@@ -7,11 +7,12 @@ use Nette\Utils\Json;
 class BaseHelpers
 {
 	/**
-	 * @template T of object
+	 * @template T
 	 * @param array<T> $xs
 	 * @param callable(T): bool $f
+	 * @return T|null
 	 */
-	public static function arrayFind(array $xs, callable $f): ?\stdClass
+	public static function arrayFind(array $xs, callable $f): mixed
 	{
 		foreach ($xs as $x) {
 			if (\call_user_func($f, $x) === true) {
