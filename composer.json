@@ -38,7 +38,8 @@
 		"phpcsfix": "phpcbf --standard=ruleset.xml --ignore=assets src",
 		"tester": "tester tests/Cases/*.phpt  -c tests/php.ini --setup tests/setup.php",
 		"fix-code": "@phpcsfix",
-		"check-code": ["@phpcs", "@phpstan"]
+		"check-code": ["@phpcs", "@phpstan"],
+		"check-commit": "@php ./vendor/liquiddesign/codestyle/src/scripts/check-last-commit.php"
 	},
 	"config": {
 		"allow-plugins": {
