@@ -101,15 +101,20 @@ class ShopsConfig
 	 * @param \StORM\ICollection<T> $collection
 	 * @param string|array<\Base\DB\Shop|string>|null|\Base\DB\Shop $shops
 	 * @param bool $showOnlyEntitiesWithSelectedShops False - Shows entities which have specified shop(s) or NULL | True - Shows only entities which have specified shop(s).
+	 * @param string $propertyName
 	 * @return \StORM\ICollection<T>
 	 */
-	public function filterShopsInShopEntityCollection(ICollection $collection, string|null|array|Shop $shops = null, bool $showOnlyEntitiesWithSelectedShops = false,): ICollection
-	{
+	public function filterShopsInShopEntityCollection(
+		ICollection $collection,
+		string|null|array|Shop $shops = null,
+		bool $showOnlyEntitiesWithSelectedShops = false,
+		string $propertyName = 'this.fk_shop',
+	): ICollection {
 		$shopsToBeFiltered = [];
 		$orCondition = null;
 
 		if (!$showOnlyEntitiesWithSelectedShops) {
-			$orCondition = ' OR this.fk_shop IS NULL';
+			$orCondition = " OR $propertyName IS NULL";
 		}
 
 		if ($shops === null) {
@@ -128,7 +133,7 @@ class ShopsConfig
 
 		$inString = $shopsToBeFiltered ? "'" . \implode("','", $shopsToBeFiltered) . "'" : null;
 
-		return $inString ? $collection->where("this.fk_shop IN ($inString)$orCondition") : $collection;
+		return $inString ? $collection->where("$propertyName IN ($inString)$orCondition") : $collection;
 	}
 
 	/**
