@@ -1,60 +1,61 @@
 {
-	"name": "liquiddesign/base",
-	"description": "⌬ Hlavní třídy a služby pro Nette",
-	"license": "MIT",
-	"autoload": {
-		"psr-4": {"Base\\": "src/"}
-	},
-	"prefer-stable": true,
-	"minimum-stability": "dev",
-	"require":
-	{
-		"php":">=8.2",
-		"nette/application":"^3.0",
-		"nette/routing":"^3.0",
-		"nette/di":"^3.0",
-		"nette/bootstrap":"^3.0",
-		"nette/caching":"^3.0",
-		"nette/security":"^3.0",
-		"liquiddesign/storm":"^1.0",
-		"liquiddesign/migrator":"^1.0",
-		"latte/latte": "~3.0",
-		"ifsnop/mysqldump-php": "^2.9",
-		"ext-pdo": "*",
-		"liquiddesign/slack-logger": "^0.0.9",
-		"nesbot/carbon": "~2.66",
-		"ext-simplexml": "*",
-		"egulias/email-validator": "^3.2"
-	},
-	"require-dev":
-	{
-		"nette/tester":"*",
-		"tracy/tracy":"*",
-		"composer/composer": "*",
-		"liquiddesign/codestyle": "^3.0.9",
-		"phpstan/phpstan-nette": "^1.0"
-	},
-	"scripts": {
-		"phpstan": "phpstan analyse --memory-limit 1G -c phpstan.neon",
-		"phpcs": "phpcs --standard=ruleset.xml --ignore=\"assets,maintenance.php\" src",
-		"phpcsfix": "phpcbf --standard=ruleset.xml --ignore=assets src",
-		"tester": "tester tests/Cases/*.phpt  -c tests/php.ini --setup tests/setup.php",
-		"fix-code": "@phpcsfix",
-		"check-code": [
-			"@phpcs",
-			"@phpstan",
-			"@check-commit"
-		],
-		"check-commit": "@php ./vendor/liquiddesign/codestyle/src/scripts/check-last-commit.php",
-		"changelog": "conventional-changelog",
-		"release": "conventional-changelog --commit",
-		"release:patch": "conventional-changelog --patch --commit",
-		"release:minor": "conventional-changelog --minor --commit",
-		"release:major": "conventional-changelog --major --commit"
-	},
-	"config": {
-		"allow-plugins": {
-			"dealerdirect/phpcodesniffer-composer-installer": true
-		}
-	}
+    "name": "liquiddesign/base",
+    "description": "⌬ Hlavní třídy a služby pro Nette",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Base\\": "src/"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.2",
+        "nette/application": "^3.0",
+        "nette/routing": "^3.0",
+        "nette/di": "^3.0",
+        "nette/bootstrap": "^3.0",
+        "nette/caching": "^3.0",
+        "nette/security": "^3.0",
+        "liquiddesign/storm": "^1.0",
+        "liquiddesign/migrator": "^1.0",
+        "latte/latte": "~3.0",
+        "ifsnop/mysqldump-php": "^2.9",
+        "ext-pdo": "*",
+        "liquiddesign/slack-logger": "^0.0.9",
+        "nesbot/carbon": "~2.66",
+        "ext-simplexml": "*",
+        "egulias/email-validator": "^3.2"
+    },
+    "require-dev": {
+        "nette/tester": "*",
+        "tracy/tracy": "*",
+        "composer/composer": "*",
+        "liquiddesign/codestyle": "^3.0.9",
+        "phpstan/phpstan-nette": "^1.0"
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse --memory-limit 1G -c phpstan.neon",
+        "phpcs": "phpcs --standard=ruleset.xml --ignore=\"assets,maintenance.php\" src",
+        "phpcsfix": "phpcbf --standard=ruleset.xml --ignore=assets src",
+        "tester": "tester tests/Cases/*.phpt  -c tests/php.ini --setup tests/setup.php",
+        "fix-code": "@phpcsfix",
+        "check-code": [
+            "@phpcs",
+            "@phpstan",
+            "@check-commit"
+        ],
+        "check-commit": "@php ./vendor/liquiddesign/codestyle/src/scripts/check-last-commit.php",
+        "changelog": "conventional-changelog",
+        "release": "conventional-changelog --commit",
+        "release:patch": "conventional-changelog --patch --commit",
+        "release:minor": "conventional-changelog --minor --commit",
+        "release:major": "conventional-changelog --major --commit"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "version": "2.0.7"
 }
