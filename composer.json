@@ -10,7 +10,7 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.2",
+        "php": "^8.1",
         "nette/application": "^3.0",
         "nette/routing": "^3.0",
         "nette/di": "^3.0",
