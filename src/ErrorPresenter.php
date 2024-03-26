@@ -12,6 +12,7 @@ use Tracy\ILogger;
 abstract class ErrorPresenter implements Nette\Application\IPresenter
 {
 	use Nette\SmartObject;
+
 	
 	/** @persistent */
 	public string $lang;
