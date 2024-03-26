@@ -52,13 +52,7 @@ class Application extends \Nette\Application\Application
 			if ($allowedHosts && !Nette\Utils\Arrays::contains($allowedHosts, $httpRequest->getHeader('host'))) {
 				throw new Nette\Application\BadRequestException('Not allowed HTTP HOST: ' . $httpRequest->getHeader('host'));
 			}
-			
-			if (!$lang = $request->getParameter($app->mutationRequestParameter)) {
-				return;
-			}
 
-			$app->setMutation($lang);
-			
 			foreach ($environments as $environment => $patterns) {
 				foreach ($patterns ?? [] as $pattern) {
 					if (Nette\Utils\Strings::contains($httpRequest->getUrl()->getBaseUrl(), $pattern) !== false) {
@@ -68,6 +62,12 @@ class Application extends \Nette\Application\Application
 					}
 				}
 			}
+
+			if (!$lang = $request->getParameter($app->mutationRequestParameter)) {
+				return;
+			}
+
+			$app->setMutation($lang);
 		};
 	}
 	
