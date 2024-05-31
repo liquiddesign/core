@@ -13,7 +13,7 @@ class ShopsConfig
 {
 	protected \stdClass $config;
 
-	private Shop|null $selectedShop;
+	private Shop|null|false $selectedShop = false;
 
 	/**
 	 * @var array<\Base\DB\Shop>
@@ -42,7 +42,7 @@ class ShopsConfig
 	 */
 	public function getSelectedShop(): Shop|null
 	{
-		if (isset($this->selectedShop)) {
+		if ($this->selectedShop !== false) {
 			return $this->selectedShop;
 		}
 
@@ -76,7 +76,7 @@ class ShopsConfig
 			$selectedShop = $this->shopRepository->many()->first();
 		}
 
-		return $this->selectedShop ??= $selectedShop;
+		return $this->selectedShop = $selectedShop;
 	}
 
 	/**
