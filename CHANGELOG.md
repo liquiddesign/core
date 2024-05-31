@@ -4,6 +4,18 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.11](https://github.com/liquiddesign/base/compare/v2.0.10...v2.0.11) (2024-05-31)
+
+### Features
+
+
+##### Shops Config
+
+* Better cache property ([4dee90](https://github.com/liquiddesign/base/commit/4dee90a98dab144df57a7fddb2520e0703c8b7b2))
+
+
+---
+
 ## [2.0.10](https://github.com/liquiddesign/base/compare/v2.0.9...v2.0.10) (2024-03-26)
 
 ### Bug Fixes
