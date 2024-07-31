@@ -32,8 +32,12 @@ class ShopsConfig
 		$this->config = $config;
 	}
 
-	public function setSelectedShop(Shop|null $shop): void
+	public function setSelectedShop(Shop|string|null $shop): void
 	{
+		if (\is_string($shop)) {
+			$shop = $this->shopRepository->one($shop, true);
+		}
+
 		$this->selectedShop = $shop;
 	}
 
