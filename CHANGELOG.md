@@ -4,6 +4,16 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.12](https://github.com/liquiddesign/base/compare/v2.0.11...v2.0.12) (2024-07-31)
+
+### Features
+
+* Add getSelectedShopByDomain method and refactor str_contains usage ([f8b60a](https://github.com/liquiddesign/base/commit/f8b60aa406d7ee38039d2eac3cc89efb6708bf33))
+* Add shop configuration and selection support ([fb6137](https://github.com/liquiddesign/base/commit/fb6137d5c3ad302cf38b13891bf2700d382cbe82))
+
+
+---
+
 ## [2.0.11](https://github.com/liquiddesign/base/compare/v2.0.10...v2.0.11) (2024-05-31)
 
 ### Features
