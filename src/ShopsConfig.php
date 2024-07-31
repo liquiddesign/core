@@ -42,6 +42,26 @@ class ShopsConfig
 	}
 
 	/**
+	 * Returns shop from domain parse
+	 */
+	public function getSelectedShopByDomain(): Shop|null
+	{
+		$host = $this->request->getUrl()->getHost();
+
+		foreach ($this->shopRepository->many() as $shop) {
+			$baseUrls = \explode(';', Strings::lower($shop->baseUrl));
+
+			foreach ($baseUrls as $baseUrl) {
+				if (\str_contains(Strings::lower($host), $baseUrl)) {
+					return $shop;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Returns shop by code in GET parameter or parse from domain
 	 */
 	public function getSelectedShop(): Shop|null
@@ -67,7 +87,7 @@ class ShopsConfig
 				$baseUrls = \explode(';', Strings::lower($shop->baseUrl));
 
 				foreach ($baseUrls as $baseUrl) {
-					if (Strings::contains(Strings::lower($host), $baseUrl)) {
+					if (\str_contains(Strings::lower($host), $baseUrl)) {
 						$selectedShop = $shop;
 
 						break;
