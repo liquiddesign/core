@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.13](https://github.com/liquiddesign/base/compare/v2.0.12...v2.0.13) (2024-07-31)
+
+### Features
+
+* Add lazy loading for selected shop ([9c1f9e](https://github.com/liquiddesign/base/commit/9c1f9e62489f6edb9ed98eef5702d2ee9c52e860))
+
+
+---
+
 ## [2.0.12](https://github.com/liquiddesign/base/compare/v2.0.11...v2.0.12) (2024-07-31)
 
 ### Features
