@@ -15,6 +15,8 @@ class ShopsConfig
 
 	private Shop|null|false $selectedShop = false;
 
+	private string|null $stringSelectedShop = null;
+
 	/**
 	 * @var array<\Base\DB\Shop>
 	 */
@@ -35,7 +37,9 @@ class ShopsConfig
 	public function setSelectedShop(Shop|string|null $shop): void
 	{
 		if (\is_string($shop)) {
-			$shop = $this->shopRepository->one($shop, true);
+			$this->stringSelectedShop = $shop;
+
+			return;
 		}
 
 		$this->selectedShop = $shop;
@@ -66,6 +70,12 @@ class ShopsConfig
 	 */
 	public function getSelectedShop(): Shop|null
 	{
+		if ($this->stringSelectedShop) {
+			$this->selectedShop = $this->shopRepository->one($this->stringSelectedShop, true);
+
+			$this->stringSelectedShop = null;
+		}
+
 		if ($this->selectedShop !== false) {
 			return $this->selectedShop;
 		}
