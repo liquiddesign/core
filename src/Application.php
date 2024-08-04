@@ -67,7 +67,11 @@ class Application extends \Nette\Application\Application
 				return;
 			}
 
-			$app->setMutation($lang);
+			try {
+				$app->setMutation($lang);
+			} catch (\InvalidArgumentException $exception) {
+				throw new \LiquidMonitorConnector\Exceptions\WeakException($exception::class, previous: $exception);
+			}
 		};
 	}
 	
