@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.14](https://github.com/liquiddesign/base/compare/v2.0.13...v2.0.14) (2024-08-04)
+
+### Features
+
+* Add LiquidMonitorConnector and handle invalid mutation exception ([f696f2](https://github.com/liquiddesign/base/commit/f696f20a0d3d203216077ebaf966e29fd7e2b213))
+
+
+---
+
 ## [2.0.13](https://github.com/liquiddesign/base/compare/v2.0.12...v2.0.13) (2024-07-31)
 
 ### Features
