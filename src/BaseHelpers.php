@@ -3,6 +3,7 @@
 namespace Base;
 
 use Nette\Utils\Json;
+use StORM\Entity;
 
 class BaseHelpers
 {
@@ -99,5 +100,22 @@ class BaseHelpers
 		$clearString = \preg_replace($regexDingbats, '', $clearString);
 
 		return $clearString;
+	}
+
+	public static function getAncestorProperty(Entity $entity, string $property, string $ancestorProperty): mixed
+	{
+		if ($entity->$property) {
+			return $entity->$property;
+		}
+
+		$tmp = $entity;
+
+		while ($tmp = $tmp->$ancestorProperty) {
+			if ($tmp->$property) {
+				return $tmp->$property;
+			}
+		}
+
+		return null;
 	}
 }
