@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.15](https://github.com/liquiddesign/base/compare/v2.0.14...v2.0.15) (2024-08-06)
+
+### Features
+
+* Add getAncestorProperty method to BaseHelpers class ([d54877](https://github.com/liquiddesign/base/commit/d548779503a03eacae75eea2611e07c013c9c161))
+
+
+---
+
 ## [2.0.14](https://github.com/liquiddesign/base/compare/v2.0.13...v2.0.14) (2024-08-04)
 
 ### Features
