@@ -2,7 +2,9 @@
 
 namespace Base;
 
+use Carbon\Carbon;
 use Composer\Script\Event;
+use Exception;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nette\Bootstrap\Configurator;
 use Nette\Caching\Cache;
@@ -18,6 +20,7 @@ use StORM\Connection;
 use StORM\DIConnection;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use ZipArchive;
 
 abstract class Scripts
 {
@@ -26,6 +29,46 @@ abstract class Scripts
 	abstract protected static function createConfigurator(): Configurator;
 	
 	abstract protected static function getAccountEntityClass(): string;
+
+	public static function compressLogs(string $tempDir): void
+	{
+		$logDir = "$tempDir/log";
+
+		// Check if the directory exists
+		if (!\is_dir($logDir)) {
+			throw new Exception('The specified directory does not exist.');
+		}
+
+		// Get current date for the zip file name
+		$currentDate = Carbon::now()->format('Y-m-d');
+		$zipFileName = $tempDir . '/logs_' . $currentDate . '.zip';
+
+		// Create a new ZipArchive object
+		$zip = new ZipArchive();
+
+		// Open the zip file
+		if ($zip->open($zipFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+			throw new Exception('Cannot create zip file');
+		}
+
+		// Get all .html and .log files from the directory
+		$files = \glob($logDir . '/*.{html,log}', \GLOB_BRACE);
+
+		// Add each file to the zip
+		foreach ($files as $file) {
+			$zip->addFile($file, \basename($file));
+		}
+
+		// Close the zip file
+		$zip->close();
+
+		// Optional: Remove original files after compression
+		foreach ($files as $file) {
+			Filesystem::delete($file);
+		}
+
+		echo "Logs compressed successfully into $zipFileName";
+	}
 	
 	public static function latteLint(Event $event): void
 	{
