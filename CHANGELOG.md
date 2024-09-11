@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.17](https://github.com/liquiddesign/base/compare/v2.0.16...v2.0.17) (2024-09-11)
+
+### Features
+
+* Add AutoWireAction interface in Base\Bridges namespace ([ba1267](https://github.com/liquiddesign/base/commit/ba1267357e4dde47b59f4d3239182f2dbc8ec8ec))
+
+
+---
+
 ## [2.0.16](https://github.com/liquiddesign/base/compare/v2.0.15...v2.0.16) (2024-08-23)
 
 ### Features
