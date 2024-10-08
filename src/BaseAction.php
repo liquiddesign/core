@@ -1,6 +1,6 @@
 <?php
 
-namespace Abel\Actions;
+namespace Base;
 
 use Base\Bridges\AutoWireAction;
 use Nette\Utils\Arrays;
