@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.19](https://github.com/liquiddesign/base/compare/v2.0.18...v2.0.19) (2024-10-08)
+
+### Features
+
+* Add BaseAction class with caching and initialization logic ([f2b9c8](https://github.com/liquiddesign/base/commit/f2b9c83287c61a6e53751a17cb475578a2380f64))
+
+
+---
+
 ## [2.0.18](https://github.com/liquiddesign/base/compare/v2.0.17...v2.0.18) (2024-10-08)
 
 
