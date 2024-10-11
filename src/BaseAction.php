@@ -31,7 +31,7 @@ class BaseAction implements AutoWireAction
 	 * @param callable(): T $dataCallback
 	 * @return T
 	 */
-	protected function getLocalCachedOutput(string|int $index, callable $dataCallback): mixed
+	protected function getLocalCachedOutput(string|int|null $index, callable $dataCallback): mixed
 	{
 		$this->startUp();
 
