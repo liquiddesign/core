@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.20](https://github.com/liquiddesign/base/compare/v2.0.19...v2.0.20) (2024-10-11)
+
+### Features
+
+* Allow null for index parameter in getLocalCachedOutput method ([39e7d3](https://github.com/liquiddesign/base/commit/39e7d385d746f037f5b584b5be10b24346273c66))
+
+
+---
+
 ## [2.0.19](https://github.com/liquiddesign/base/compare/v2.0.18...v2.0.19) (2024-10-08)
 
 ### Features
