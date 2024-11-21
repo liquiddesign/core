@@ -2,6 +2,7 @@
 
 namespace Base;
 
+use Nette\Utils\Arrays;
 use Nette\Utils\Json;
 use StORM\Entity;
 
@@ -117,5 +118,50 @@ class BaseHelpers
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param class-string|object $class
+	 * @param class-string $trait
+	 */
+	public static function usesTrait(string|object $class, string $trait): bool
+	{
+		return Arrays::contains(self::classUsesRecursive($class), $trait);
+	}
+
+	/**
+	 * Returns all traits used by a class, its parent classes and trait of their traits.
+	 * @param object|string $class
+	 * @return array<mixed>
+	 */
+	public static function classUsesRecursive(object|string $class): array
+	{
+		if (\is_object($class)) {
+			$class = $class::class;
+		}
+
+		$results = [];
+
+		foreach (\array_reverse(\class_parents($class) ?: []) + [$class => $class] as $class) {
+			$results += self::traitUsesRecursive($class);
+		}
+
+		return \array_unique($results);
+	}
+
+	/**
+	 * Returns all traits used by a trait and its traits.
+	 * @param object|string $trait
+	 * @return array<mixed>
+	 */
+	public static function traitUsesRecursive(object|string $trait): array
+	{
+		$traits = \class_uses($trait) ?: [];
+
+		foreach ($traits as $trait) {
+			$traits += self::traitUsesRecursive($trait);
+		}
+
+		return $traits;
 	}
 }
