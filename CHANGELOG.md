@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.22](https://github.com/liquiddesign/base/compare/v2.0.21...v2.0.22) (2024-11-21)
+
+### Features
+
+* Add classUsesRecursive ([f8c6a2](https://github.com/liquiddesign/base/commit/f8c6a2bd18222fe88874b1358ee0b439d736ccf7))
+
+
+---
+
 ## [2.0.21](https://github.com/liquiddesign/base/compare/v2.0.20...v2.0.21) (2024-10-21)
 
 
