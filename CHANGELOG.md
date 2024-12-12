@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [2.0.23](https://github.com/liquiddesign/base/compare/v2.0.22...v2.0.23) (2024-12-12)
+
+### Features
+
+* Add EnumHelpers class with getEnumValues method ([83a804](https://github.com/liquiddesign/base/commit/83a804e0fe96d7b34d7eab9671e7cfdab2e944b7))
+
+
+---
+
 ## [2.0.22](https://github.com/liquiddesign/base/compare/v2.0.21...v2.0.22) (2024-11-21)
 
 ### Features
